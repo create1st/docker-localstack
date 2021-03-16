@@ -1,0 +1,61 @@
+env:
+  BUILDKITE_CLEAN_CHECKOUT: true
+  DEV_PROFILE: 'dev'
+  DEV_PROFILE_AGENT: 'dev'
+  TF_PATH: infrastructure/terraform
+steps:
+  - name: ':terraform: Validate'
+    plugins:
+      docker-compose#v3.6.0:
+        config: infrastructure/docker-compose.yaml
+        pull: validate
+        run: validate
+    env:
+      TF_PATH: ${TF_PATH}
+
+  - name: ':terraform: Format'
+    plugins:
+      docker-compose#v3.6.0:
+        config: infrastructure/docker-compose.yaml
+        pull: fmt
+        run: fmt
+    env:
+      TF_PATH: ${TF_PATH}
+
+  - name: ':terraform: Plan Dev'
+    plugins:
+      docker-compose#v3.6.0:
+        config: infrastructure/docker-compose.yaml
+        pull: plan
+        run: plan
+      artifacts#v1.3.0:
+        upload:
+          from: infrastructure/tf-plan-dev
+          to: tf-plan-dev
+    agents:
+      queue: ${DEV_PROFILE_AGENT}
+    env:
+      ENV_PROFILE: ${DEV_PROFILE}
+      TF_PATH: ${TF_PATH}
+
+  - wait: ~
+
+  - block: ':terraform: Apply changes on Dev?'
+
+  - name: ':terraform: Applying changes on Dev'
+    plugins:
+      docker-compose#v3.6.0:
+        config: infrastructure/docker-compose.yaml
+        pull: apply
+        run: apply
+        artifacts#v1.3.0:
+          upload:
+            from: tf-plan-dev
+            to: infrastructure/tf-plan-dev
+    agents:
+      queue: ${DEV_PROFILE_AGENT}
+    env:
+      ENV_PROFILE: ${DEV_PROFILE}
+      TF_PATH: ${TF_PATH}
+
+

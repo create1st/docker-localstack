@@ -1,0 +1,29 @@
+steps:
+  - label: "Triggering pipelines"
+    plugins:
+      - chronotc/monorepo-diff#1.3.2:
+          diff: "git diff --name-only HEAD~1" # ".buildkite/scripts/diff-against-last-successful-build.sh"
+          watch:
+            - path: infrastructure/terraform/
+              config:
+                command: "buildkite-agent pipeline upload infrastructure/.buildkite/pipeline.yaml"
+                label: "Triggered infrastructure update"
+                build:
+                  message: "$SSH_AUTH_SOCK"
+                  env:
+                    - BUILDKITE_TAG
+
+#          wait: ~
+
+#            - path: "app/"
+#              config:
+#                trigger: "deploy-app-service"
+#                  label: "Triggered deploy"
+#                  build:
+#                    message: "Deploying App service"
+#                    env:
+#                      - HELLO=123
+#                      - AWS_REGION
+#          wait: true
+#            hooks:
+#                - command: "echo $(git rev-parse HEAD) > last_successful_build"

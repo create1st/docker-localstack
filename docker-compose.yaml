@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    ports:
+      - 8080:8080
+      - 4570:4570
+      - 4572:4572
+      - 4575:4575
+      - 4566:4566
+    environment:
+      - SERVICES=sqs:4570,s3:4572,sns:4575
+      - EDGE_PORT=4566
+      - DEBUG=s3
+      - DATA_DIR=/tmp/localstack/data
+      - PORT_WEB_UI=8080
+      - LAMBDA_EXECUTOR=local
+      - KINESIS_ERROR_PROBABILITY=0.0
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tmpfs:
+      - /tmp/localstack:exec,mode=600
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:alpine
+    container_name: "postgres"
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: demo
+      POSTGRES_USER: tester
+      POSTGRES_PASSWORD: testowy
+      PGDATA: /tmp/postgres
+    volumes:
+      - /var/tmp/postgres:/tmp/postgres
+      - ./migration-schema/postgres-initdb.sh:/docker-entrypoint-initdb.d/init.sh
+    restart: unless-stopped
+
+#  pgadmin:
+#    image: fenglc/pgadmin4:latest
+#    container_name: "pgadmin"
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+#      PGADMIN_DEFAULT_PASSWORD: admin
+#    depends_on:
+#      - postgres
+#    volumes:
+#      - /var/tmp/.pgadmin:/tmp/.pgadmin
+#    ports:
+#      - "5050:5050"
+#    restart: unless-stopped
+#
+#  portainer:
+#    image: portainer/portainer
+#    container_name: "portainer"
+#    ports:
+#      - "9000:9000"
+#    command: --no-auth
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /var/tmp:/data
+#    restart: unless-stopped

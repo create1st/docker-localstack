@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  validate:
+    image: hashicorp/terraform:0.12.16
+    environment:
+      - SSH_AUTH_SOCK
+      - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
+      - TF_INPUT=0
+      - TF_PATH
+    volumes:
+      - $SSH_AUTH_SOCK:/ssh-agent
+      - $HOME/.ssh/known_hosts:/known_hosts
+      - $PWD:/working_dir
+    working_dir: /working_dir
+    entrypoint: sh
+    command: -c ". infrastructure/scripts/validate.sh"
+
+  fmt:
+    image: hashicorp/terraform:0.12.16
+    environment:
+      - SSH_AUTH_SOCK
+      - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
+      - TF_INPUT=0
+      - TF_PATH
+    volumes:
+      - $SSH_AUTH_SOCK:/ssh-agent
+      - $HOME/.ssh/known_hosts:/known_hosts
+      - $PWD:/working_dir
+    working_dir: /working_dir
+    entrypoint: sh
+    command: -c ". infrastructure/scripts/fmt.sh"
+
+  plan:
+    image: hashicorp/terraform:0.12.16
+    environment:
+      - SSH_AUTH_SOCK
+      - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
+      - TF_INPUT=0
+      - TF_PATH
+      - ENV_PROFILE
+    volumes:
+      - $SSH_AUTH_SOCK:/ssh-agent
+      - $HOME/.ssh/known_hosts:/known_hosts
+      - $PWD:/working_dir
+    working_dir: /working_dir
+    entrypoint: sh
+    command: -c ". infrastructure/scripts/plan.sh"
+
+  apply:
+    image: hashicorp/terraform:0.12.16
+    environment:
+      - SSH_AUTH_SOCK
+      - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
+      - TF_INPUT=0
+      - TF_PATH
+      - ENV_PROFILE
+    volumes:
+      - $SSH_AUTH_SOCK:/ssh-agent
+      - $HOME/.ssh/known_hosts:/known_hosts
+      - $PWD:/working_dir
+    working_dir: /working_dir
+    entrypoint: sh
+    command: -c ". infrastructure/scripts/apply.sh"
