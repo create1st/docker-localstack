@@ -2,6 +2,7 @@
 Docker + localstack + Buildkite
 
 ``` bash
+docker-compose up
 eval `ssh-agent`
 bk run -E SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
 ```
