@@ -1,0 +1,1 @@
+bucket=docker-localstack-tfstate-dev
