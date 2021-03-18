@@ -1,27 +1,35 @@
 version: "3.9"
+
+networks:
+  docker-localstack-network:
+    external:
+      name: docker-localstack-network
+
 services:
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:0.11.1
     container_name: localstack
     ports:
-      - 8080:8080
-      - 4570:4570
-      - 4572:4572
-      - 4575:4575
-      - 4566:4566
+      - 4572:4572 # s3
+      - 4575:4575 # sns
+      - 4576:4576 # sqs
+      - 4584:4584 # secretsmanager
     environment:
-      - SERVICES=sqs:4570,s3:4572,sns:4575
-      - EDGE_PORT=4566
-      - DEBUG=s3
-      - DATA_DIR=/tmp/localstack/data
-      - PORT_WEB_UI=8080
+      - SERVICES=s3,sns,sqs,secretsmanager # iam,lambda
+      - DATA_DIR=${DATA_DIR:-/tmp/localstack/data}
       - LAMBDA_EXECUTOR=local
       - KINESIS_ERROR_PROBABILITY=0.0
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
+      - ${TMPDIR:-/tmp/localstack}:/tmp/localstack
       - /var/run/docker.sock:/var/run/docker.sock
-    tmpfs:
-      - /tmp/localstack:exec,mode=600
+    networks:
+      docker-localstack-network:
+        aliases:
+          - s3
+          - sns
+          - sqs
+          - secretsmanager
     restart: unless-stopped
 
   postgres:
@@ -30,13 +38,17 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_DB: demo
-      POSTGRES_USER: tester
-      POSTGRES_PASSWORD: testowy
+      POSTGRES_DB: docker-localstack-db
+      POSTGRES_USER: docker-localstack-user
+      POSTGRES_PASSWORD: docker-localstack-password
       PGDATA: /tmp/postgres
     volumes:
       - /var/tmp/postgres:/tmp/postgres
       - ./migration-schema/postgres-initdb.sh:/docker-entrypoint-initdb.d/init.sh
+    networks:
+      docker-localstack-network:
+        aliases:
+          - postgres
     restart: unless-stopped
 
 #  pgadmin:
