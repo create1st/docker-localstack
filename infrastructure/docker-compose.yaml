@@ -1,63 +1,73 @@
 version: "3.9"
+
+networks:
+  docker-localstack-network:
+    external:
+      name: docker-localstack-network
+
 services:
   validate:
-    image: hashicorp/terraform:0.12.16
+    image: hashicorp/terraform:0.14.8
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
       - TF_INPUT=0
-      - TF_PATH
+      - TF_PATH=${INFRA_PATH:-.}/terraform
     volumes:
       - $SSH_AUTH_SOCK:/ssh-agent
       - $HOME/.ssh/known_hosts:/known_hosts
       - $PWD:/working_dir
     working_dir: /working_dir
     entrypoint: sh
-    command: -c ". infrastructure/scripts/validate.sh"
+    command: -c ". ${INFRA_PATH:-.}/scripts/validate.sh"
 
   fmt:
-    image: hashicorp/terraform:0.12.16
+    image: hashicorp/terraform:0.14.8
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
       - TF_INPUT=0
-      - TF_PATH
+      - TF_PATH=${INFRA_PATH:-.}/terraform
     volumes:
       - $SSH_AUTH_SOCK:/ssh-agent
       - $HOME/.ssh/known_hosts:/known_hosts
       - $PWD:/working_dir
     working_dir: /working_dir
     entrypoint: sh
-    command: -c ". infrastructure/scripts/fmt.sh"
+    command: -c ". ${INFRA_PATH:-.}/scripts/fmt.sh"
 
   plan:
-    image: hashicorp/terraform:0.12.16
+    image: hashicorp/terraform:0.14.8
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
       - TF_INPUT=0
-      - TF_PATH
-      - ENV_PROFILE
+      - TF_PATH=${INFRA_PATH:-.}/terraform
+      - ENV_PROFILE=${ENV_PROFILE:-dev}
     volumes:
       - $SSH_AUTH_SOCK:/ssh-agent
       - $HOME/.ssh/known_hosts:/known_hosts
       - $PWD:/working_dir
     working_dir: /working_dir
     entrypoint: sh
-    command: -c ". infrastructure/scripts/plan.sh"
+    command: -c ". ${INFRA_PATH:-.}/scripts/plan.sh"
+    networks:
+      - docker-localstack-network
 
   apply:
-    image: hashicorp/terraform:0.12.16
+    image: hashicorp/terraform:0.14.8
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
       - TF_INPUT=0
-      - TF_PATH
-      - ENV_PROFILE
+      - TF_PATH=${INFRA_PATH:-.}/terraform
+      - ENV_PROFILE=${ENV_PROFILE:-dev}
     volumes:
       - $SSH_AUTH_SOCK:/ssh-agent
       - $HOME/.ssh/known_hosts:/known_hosts
       - $PWD:/working_dir
     working_dir: /working_dir
     entrypoint: sh
-    command: -c ". infrastructure/scripts/apply.sh"
+    command: -c ". ${INFRA_PATH:-.}/scripts/apply.sh"
+    networks:
+      - docker-localstack-network

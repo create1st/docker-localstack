@@ -13,3 +13,17 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 /.idea/
+/infrastructure/.terraform/
+/infrastructure/docker-compose-logs/
+/infrastructure/.terraform.lock.hcl
+/.terraform.lock.hcl
+/.terraform.tfstate.lock.info
+/terraform.tfstate
+/tf-plan-dev
+/infrastructure/terraform/.terraform.lock.hcl
+/infrastructure/terraform/tf_plan
+/infrastructure/terraform/.terraform/
+/infrastructure/.terraform.tfstate.lock.info
+/infrastructure/tf-plan-dev
+/infrastructure/terraform.tfstate
+/infrastructure/terraform.tfstate.backup

@@ -2,8 +2,12 @@
 Docker + localstack + Buildkite
 
 ``` bash
-docker-compose up
+docker network create docker-localstack-network
+docker-compose -f docker-compose-localstack.yaml up
+
 eval `ssh-agent`
+export TF_CLI_ARGS_apply="-no-color"
+export TF_CLI_ARGS_plan="-no-color"
 bk run -E SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
 ```
 

@@ -1,3 +1,5 @@
+env:
+  INFRA_PATH: 'infrastructure'
 steps:
   - label: "Triggering pipelines"
     plugins:
@@ -6,12 +8,10 @@ steps:
           watch:
             - path: infrastructure/terraform/
               config:
-                command: "buildkite-agent pipeline upload infrastructure/.buildkite/pipeline.yaml"
+                command: "buildkite-agent pipeline upload ${INFRA_PATH}/.buildkite/pipeline.yaml"
                 label: "Triggered infrastructure update"
-                build:
-                  message: "$SSH_AUTH_SOCK"
-                  env:
-                    - BUILDKITE_TAG
+                env:
+                  - INFRA_PATH
 
 #          wait: ~
 
