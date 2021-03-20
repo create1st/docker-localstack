@@ -1,19 +1,23 @@
 env:
   BUILDKITE_CLEAN_CHECKOUT: true
-
-  AWS_ACTION_ROTATE_SECRETS: 'rotate-secrets'
+  
+  K8S_ACTION_START: 'start'
+  K8S_ACTION_STOP: 'stop'
 
   AWS_IAM_ACCOUNT_DEV: 'AWS_IAM_ACCOUNT_DEV'
 
-  BK_AGENT_DEVOPS: 'dev-aws-ops'
+  BK_AGENT_DEVOPS: 'dev-k8s-ops'
 steps:
-  - block: ':aws: DevOps'
+  - block: ':k8s: DevOps'
+#    branches: "main"
     fields:
       - select: 'Select operation'
         options:
-          - label: 'Rotate secrets'
-            value: ${ACTION_AWS_ROTATE_SECRETS}
-        key: AWS_ACTION
+          - label: 'Start'
+            value: ${K8S_ACTION_START}
+          - label: 'Stop'
+            value: ${K8S_ACTION_STOP}
+        key: K8S_ACTION
         requires: true
       - select: 'Select environment'
         options:
@@ -24,15 +28,14 @@ steps:
       - text: 'Reason?'
         key: BK_ACTION_REASON
         required: true
-  
-  - label: ':aws: DevOps Apply'
-    branches: 'main'
-    command: '.buildkite/scripts/aws-ops.sh'
+
+  - label: ':k8s: Starting action'
+    command: '.buildkite/scripts/k8s-ops.sh'
     agents:
       queue: ${BK_AGENT_DEVOPS}
-      
+
   - label: ':buildkite: Annotate build'
-    branches: 'main'
+    #    branches: 'main'
     command: '.buildkite/scripts/bk-annotate.sh'
     agents:
       queue: ${BK_AGENT_DEVOPS}

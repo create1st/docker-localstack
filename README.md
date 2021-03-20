@@ -16,6 +16,8 @@ bk run .buildkite/pipeline-aws-ops.yaml
 * https://github.com/chronotc/monorepo-diff-buildkite-plugin
 * https://github.com/buildkite-plugins/docker-compose-buildkite-plugin
 * https://github.com/buildkite-plugins/artifacts-buildkite-plugin
+* https://github.com/cultureamp/aws-assume-role-buildkite-plugin
+  https://github.com/buildkite-plugins/ecr-buildkite-plugin
 
 ### Docker
 

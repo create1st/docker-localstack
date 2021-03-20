@@ -3,7 +3,7 @@ env:
 
   PROFILE_DEV: 'dev'
 
-  AGENT_DEV: 'dev'
+  BK_AGENT_INFRA: 'infra'
 steps:
   - label: ':terraform: Validate'
     plugins:
@@ -12,7 +12,7 @@ steps:
         pull: validate
         run: validate
     agents:
-      queue: ${AGENT_DEV}
+      queue: ${BK_AGENT_INFRA}
     env:
       INFRA_PATH: ${INFRA_PATH:-.}
 
@@ -23,7 +23,7 @@ steps:
         pull: fmt
         run: fmt
     agents:
-      queue: ${AGENT_DEV}
+      queue: ${BK_AGENT_INFRA}
     env:
       INFRA_PATH: ${INFRA_PATH:-.}
 
@@ -38,7 +38,7 @@ steps:
           from: ${INFRA_PATH:-.}/tf-plan-dev
           to: tf-plan-dev
     agents:
-      queue: ${AGENT_DEV}
+      queue: ${BK_AGENT_INFRA}
     env:
       PROFILE: ${PROFILE_DEV}
       INFRA_PATH: ${INFRA_PATH:-.}
@@ -58,7 +58,7 @@ steps:
           from: tf-plan-dev
           to: ${INFRA_PATH:-.}/tf-plan-dev
     agents:
-      queue: ${AGENT_DEV}
+      queue: ${BK_AGENT_INFRA}
     env:
       PROFILE: ${PROFILE_DEV}
       INFRA_PATH: ${INFRA_PATH:-.}
