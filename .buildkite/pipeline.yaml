@@ -1,8 +1,11 @@
 env:
+  BUILDKITE_CLEAN_CHECKOUT: true
+
   INFRA_PATH: 'infrastructure'
-  AGENT_GLOBAL: 'global'
+
+  BK_AGENT_GLOBAL: 'global'
 steps:
-  - label: "Triggering pipelines"
+  - label: ":buildkite: Triggering pipelines"
     plugins:
       - chronotc/monorepo-diff#1.3.2:
           diff: "git diff --name-only HEAD~1" # ".buildkite/scripts/diff-against-last-successful-build.sh"
@@ -10,11 +13,11 @@ steps:
             - path: infrastructure/terraform/
               config:
                 command: "buildkite-agent pipeline upload ${INFRA_PATH}/.buildkite/pipeline.yaml"
-                label: "Triggered infrastructure update"
+                label: ":terraform: Triggered infrastructure update"
                 env:
                   - INFRA_PATH
     agents:
-      queue: ${AGENT_GLOBAL}
+      queue: ${BK_AGENT_GLOBAL}
 
 #          wait: ~
 
