@@ -1,0 +1,36 @@
+env:
+  ACTION_AWS_ROTATE_SECRETS: 'rotate-secrets'
+
+  PROFILE_DEV: 'dev'
+
+  AGENT_DEVOPS: 'dev-ops'
+steps:
+  - block: 'DevOps'
+    fields:
+      - select: 'Select operation'
+        options:
+          - label: 'Rotate secrets'
+            value: ${ACTION_AWS_ROTATE_SECRETS}
+        key: DEVOPS_ACTION
+        requires: true
+      - select: 'Select environment'
+        options:
+          - label: 'Development'
+            value: ${PROFILE_DEV}
+        key: DEVOPS_PROFILE
+        requires: true
+      - text: 'Reason?'
+        key: DEVOPS_ACTION_REASON
+        required: true
+  
+  - label: 'DevOps Apply'
+    branches: 'main'
+    command: '.buildkite/scripts/aws-ops.sh'
+    agents:
+      queue: ${AGENT_DEVOPS}
+      
+  - label: 'Annotate build'
+    branches: 'main'
+    command: '.buildkite/scripts/bk-annotate.sh'
+    agents:
+      queue: ${AGENT_DEVOPS}

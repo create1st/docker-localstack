@@ -43,7 +43,7 @@ services:
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
       - TF_INPUT=0
       - TF_PATH=${INFRA_PATH:-.}/terraform
-      - ENV_PROFILE=${ENV_PROFILE:-dev}
+      - PROFILE=${PROFILE:-dev}
     volumes:
       - $SSH_AUTH_SOCK:/ssh-agent
       - $HOME/.ssh/known_hosts:/known_hosts
@@ -61,7 +61,7 @@ services:
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
       - TF_INPUT=0
       - TF_PATH=${INFRA_PATH:-.}/terraform
-      - ENV_PROFILE=${ENV_PROFILE:-dev}
+      - PROFILE=${PROFILE:-dev}
     volumes:
       - $SSH_AUTH_SOCK:/ssh-agent
       - $HOME/.ssh/known_hosts:/known_hosts

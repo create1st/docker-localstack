@@ -1,31 +1,33 @@
 env:
   BUILDKITE_CLEAN_CHECKOUT: true
-  DEV_PROFILE: 'dev'
-  DEV_PROFILE_AGENT: 'dev'
+
+  PROFILE_DEV: 'dev'
+
+  AGENT_DEV: 'dev'
 steps:
-  - name: ':terraform: Validate'
+  - label: ':terraform: Validate'
     plugins:
       docker-compose#v3.6.0:
         config: ${INFRA_PATH:-.}/docker-compose.yaml
         pull: validate
         run: validate
     agents:
-      queue: ${DEV_PROFILE_AGENT}
+      queue: ${AGENT_DEV}
     env:
       INFRA_PATH: ${INFRA_PATH:-.}
 
-  - name: ':terraform: Format'
+  - label: ':terraform: Format'
     plugins:
       docker-compose#v3.6.0:
         config: ${INFRA_PATH:-.}/docker-compose.yaml
         pull: fmt
         run: fmt
     agents:
-      queue: ${DEV_PROFILE_AGENT}
+      queue: ${AGENT_DEV}
     env:
       INFRA_PATH: ${INFRA_PATH:-.}
 
-  - name: ':terraform: Plan Dev'
+  - label: ':terraform: Plan Dev'
     plugins:
       docker-compose#v3.6.0:
         config: ${INFRA_PATH:-.}/docker-compose.yaml
@@ -36,16 +38,16 @@ steps:
           from: ${INFRA_PATH:-.}/tf-plan-dev
           to: tf-plan-dev
     agents:
-      queue: ${DEV_PROFILE_AGENT}
+      queue: ${AGENT_DEV}
     env:
-      ENV_PROFILE: ${DEV_PROFILE}
+      PROFILE: ${PROFILE_DEV}
       INFRA_PATH: ${INFRA_PATH:-.}
 
   - wait: ~
 
   - block: ':terraform: Apply changes on Dev?'
 
-  - name: ':terraform: Applying changes on Dev'
+  - label: ':terraform: Applying changes on Dev'
     plugins:
       docker-compose#v3.6.0:
         config: ${INFRA_PATH:-.}/docker-compose.yaml
@@ -56,7 +58,7 @@ steps:
           from: tf-plan-dev
           to: ${INFRA_PATH:-.}/tf-plan-dev
     agents:
-      queue: ${DEV_PROFILE_AGENT}
+      queue: ${AGENT_DEV}
     env:
-      ENV_PROFILE: ${DEV_PROFILE}
+      PROFILE: ${PROFILE_DEV}
       INFRA_PATH: ${INFRA_PATH:-.}
