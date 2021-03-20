@@ -1,5 +1,6 @@
 env:
   INFRA_PATH: 'infrastructure'
+  AGENT_GLOBAL: 'global'
 steps:
   - label: "Triggering pipelines"
     plugins:
@@ -12,6 +13,8 @@ steps:
                 label: "Triggered infrastructure update"
                 env:
                   - INFRA_PATH
+    agents:
+      queue: ${AGENT_GLOBAL}
 
 #          wait: ~
 
