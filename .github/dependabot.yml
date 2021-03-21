@@ -1,0 +1,37 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "all"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "all"
+
+  - package-ecosystem: "docker"
+    directory: "/infrastructure"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "all"
+
+  - package-ecosystem: "terraform"
+    directory: "/infrastructure/.terraform"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "all"
+
+  - package-ecosystem: "gradle"
+    directory: "/app"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "all"
+
