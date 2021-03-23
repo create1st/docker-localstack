@@ -1,9 +1,9 @@
 <div align="center">    
  <img src="https://img.shields.io/github/license/create1st/docker-localstack.svg" align="left" />
- <img src="https://img.shields.io/badge/Docker.svg" align="left" />
- <img src="https://img.shields.io/badge/localstack.svg" align="left" />
- <img src="https://img.shields.io/badge/Terraform.svg" align="left" />
- <img src="https://img.shields.io/badge/Buildkite.svg" align="left" />
+ <img src="https://img.shields.io/badge/Docker-blue.svg" align="left" />
+ <img src="https://img.shields.io/badge/localstack-green.svg" align="left" />
+ <img src="https://img.shields.io/badge/Terraform-green.svg" align="left" />
+ <img src="https://img.shields.io/badge/Buildkite-green.svg" align="left" />
  <img src="https://img.shields.io/badge/PRs-welcome-green.svg" align="left" />
 </div>
 
