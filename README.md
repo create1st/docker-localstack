@@ -2,7 +2,7 @@
  <img src="https://img.shields.io/github/license/create1st/docker-localstack.svg" align="left" />
  <img src="https://img.shields.io/badge/Docker-blue.svg" align="left" />
  <img src="https://img.shields.io/badge/localstack-orange.svg" align="left" />
- <img src="https://img.shields.io/badge/Terraform-violet.svg" align="left" />
+ <img src="https://img.shields.io/badge/Terraform-purple.svg" align="left" />
  <img src="https://img.shields.io/badge/Buildkite-green.svg" align="left" />
  <img src="https://img.shields.io/badge/PRs-welcome-green.svg" align="left" />
 </div>
