@@ -31,5 +31,5 @@ steps:
 #                      - HELLO=123
 #                      - AWS_REGION
 #          wait: true
-#            hooks:
-#                - command: "echo $(git rev-parse HEAD) > last_successful_build"
+          hooks:
+            - command: "echo $(git rev-parse HEAD) > last_successful_build"
