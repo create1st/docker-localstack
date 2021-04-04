@@ -20,6 +20,7 @@ export TF_CLI_ARGS_plan="-no-color"
 bk run -E SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
 bk run .buildkite/pipeline-aws-ops.yaml
 bk run .buildkite/pipeline-k8s-ops.yaml
+buildkite-agent start --spawn 5 --tags "queue=global,queue=infra,queue=dev-aws-ops,queue=dev-k8s-ops,queue=app"
 ```
 
 ### Buildkite
