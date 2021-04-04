@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    driverClassName: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
+    url: create/docker_localstack_db/docker_localstack
+    username: ${spring.datasource.url}

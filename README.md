@@ -28,7 +28,9 @@ buildkite-agent start --spawn 5 --tags "queue=global,queue=infra,queue=dev-aws-o
 * https://github.com/buildkite-plugins/docker-compose-buildkite-plugin
 * https://github.com/buildkite-plugins/artifacts-buildkite-plugin
 * https://github.com/cultureamp/aws-assume-role-buildkite-plugin
-  https://github.com/buildkite-plugins/ecr-buildkite-plugin
+* https://github.com/buildkite-plugins/ecr-buildkite-plugin
+* https://github.com/coyainsurance/s3-cache-buildkite-plugin/tags
+* https://github.com/thedyrt/change-directory-buildkite-plugin
 
 ### Docker
 

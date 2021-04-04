@@ -7,7 +7,7 @@ networks:
 
 services:
   validate:
-    image: hashicorp/terraform:0.14.8
+    image: hashicorp/terraform:0.14.9
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
@@ -22,7 +22,7 @@ services:
     command: -c ". ${INFRA_PATH:-.}/scripts/validate.sh"
 
   fmt:
-    image: hashicorp/terraform:0.14.8
+    image: hashicorp/terraform:0.14.9
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
@@ -37,7 +37,7 @@ services:
     command: -c ". ${INFRA_PATH:-.}/scripts/fmt.sh"
 
   plan:
-    image: hashicorp/terraform:0.14.8
+    image: hashicorp/terraform:0.14.9
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts
@@ -55,7 +55,7 @@ services:
       - docker-localstack-network
 
   apply:
-    image: hashicorp/terraform:0.14.8
+    image: hashicorp/terraform:0.14.9
     environment:
       - SSH_AUTH_SOCK
       - GIT_SSH_COMMAND=ssh -o GlobalKnownHostsFile=/known_hosts

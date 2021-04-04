@@ -27,3 +27,4 @@ gradle-app.setting
 /infrastructure/tf-plan-dev
 /infrastructure/terraform.tfstate
 /infrastructure/terraform.tfstate.backup
+/docker-compose-logs/
