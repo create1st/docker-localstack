@@ -5,31 +5,24 @@ env:
 
   BK_AGENT_GLOBAL: 'global'
 steps:
-  - label: ":buildkite: Triggering pipelines"
+  - label: ':buildkite: Triggering pipelines'
     plugins:
       - chronotc/monorepo-diff#1.3.2:
           diff: ".buildkite/scripts/diff-against-last-built-tag.sh"
           watch:
-            - path: infrastructure/terraform/
+            - path: app/
               config:
+                label: ':gradle: Triggered application update'
+                trigger: docker-localstack-app
+                async: false
+            - path: infrastructure/
+              config:
+                label: ':terraform: Triggered infrastructure update'
                 command: "buildkite-agent pipeline upload ${INFRA_PATH}/.buildkite/pipeline.yaml"
-                label: ":terraform: Triggered infrastructure update"
+                async: false
                 env:
                   - INFRA_PATH
           hooks:
             - command: "echo $(git rev-parse HEAD) > last_successful_build"
     agents:
       queue: ${BK_AGENT_GLOBAL}
-
-#          wait: ~
-
-#            - path: "app/"
-#              config:
-#                trigger: "deploy-app-service"
-#                  label: "Triggered deploy"
-#                  build:
-#                    message: "Deploying App service"
-#                    env:
-#                      - HELLO=123
-#                      - AWS_REGION
-#          wait: true
