@@ -23,6 +23,24 @@ bk run .buildkite/pipeline-k8s-ops.yaml
 buildkite-agent start --spawn 5 --tags "queue=global,queue=infra,queue=dev-aws-ops,queue=dev-k8s-ops,queue=app"
 ```
 
+``` bash
+cd app
+docker-compose --compose -f docker-compose-integration-tests.yml build 
+docker-compose --compose -f docker-compose-integration-tests.yml up localstack-setup postgresql
+docker-compose -f docker-compose-integration-tests.yml run integration-test
+```
+
+``` bash
+bk run app/.buildkite/pipeline.yaml
+```
+
+# IntelliJ
+``` bash
+cd app
+docker-compose -f docker-compose-local.yml build
+docker-compose -f docker-compose-local.yml up
+```
+
 ### Buildkite
 * https://github.com/chronotc/monorepo-diff-buildkite-plugin
 * https://github.com/buildkite-plugins/docker-compose-buildkite-plugin

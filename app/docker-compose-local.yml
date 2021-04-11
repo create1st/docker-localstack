@@ -1,0 +1,55 @@
+version: '3.9'
+
+networks:
+  docker-localstack-network:
+
+services:
+
+  localstack:
+    image: localstack/localstack:0.12.9.1
+    container_name: localstack
+    ports:
+      - 4566:4566
+    environment:
+      - SERVICES=s3,sns,sqs,secretsmanager # iam,lambda
+      - HOSTNAME_EXTERNAL=localhost
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=docker-localhost-key
+      - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+    networks:
+      docker-localstack-network:
+        aliases:
+          - s3
+          - sns
+          - sqs
+          - secretsmanager
+
+  localstack-setup:
+    build:
+      context: localstack
+    container_name: localstack-setup
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=docker-localhost-key
+      - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+      - SMS_ENDPOINT=http://secretsmanager:4566
+      - SQS_ENDPOINT=http://sqs:4566
+    depends_on:
+      - localstack
+    networks:
+      - docker-localstack-network
+
+  postgresql:
+    image: postgres:13.2-alpine
+    container_name: postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=docker-localstack-db
+      - POSTGRES_USER=docker-localstack-user
+      - POSTGRES_PASSWORD=docker-localstack-password
+      - PGDATA=/tmp/postgres
+    networks:
+      docker-localstack-network:
+        aliases:
+          - postgres
