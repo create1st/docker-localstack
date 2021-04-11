@@ -7,7 +7,7 @@ networks:
 
 services:
   localstack:
-    image: localstack/localstack:0.11.1
+    image: localstack/localstack:0.12.9.1
     container_name: localstack
     ports:
       - 4572:4572 # s3

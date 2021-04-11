@@ -1,6 +1,6 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/docker_localstack
-    username: docker_localstack
-    password: docker_localstack
+    url: jdbc:postgresql://localhost:5432/docker-localstack-db
+    username: docker-localstack-user
+    password: docker-localstack-password

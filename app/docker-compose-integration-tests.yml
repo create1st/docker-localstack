@@ -1,0 +1,74 @@
+version: '3.9'
+
+networks:
+  docker-localstack-network:
+
+services:
+  localstack:
+    image: localstack/localstack:0.12.9.1
+    ports:
+      - 4566
+    environment:
+      - SERVICES=s3,sns,sqs,secretsmanager # iam,lambda
+      - HOSTNAME_EXTERNAL=localstack
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=docker-localhost-key
+      - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+    networks:
+      docker-localstack-network:
+        aliases:
+          - s3
+          - sns
+          - sqs
+          - secretsmanager
+
+  localstack-setup:
+    build:
+      context: localstack
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=docker-localhost-key
+      - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+      - SMS_ENDPOINT=http://secretsmanager:4566
+      - SQS_ENDPOINT=http://sqs:4566
+    depends_on:
+      - localstack
+    networks:
+      - docker-localstack-network
+
+  postgresql:
+    image: postgres:13.2-alpine
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_DB=docker-localstack-db
+      - POSTGRES_USER=docker-localstack-user
+      - POSTGRES_PASSWORD=docker-localstack-password
+      - PGDATA=/tmp/postgres
+    networks:
+      docker-localstack-network:
+        aliases:
+          - postgres
+
+  integration-test:
+    image: openjdk:11.0.10
+    working_dir: /app
+    volumes:
+    - ./:/app
+    - ${GRADLE_CACHE:-~/.gradle}:/root/.gradle
+    - ${TMPDIR:-/tmp/localstack}:/tmp/localstack
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ${HOME}/.docker:/root/.docker:ro
+    - ${HOME}/.aws:/root/.aws:ro
+    command: './gradlew --stacktrace --no-daemon clean integrationTest -x test'
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=docker-localhost-key
+      - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+      - SPRING_PROFILES_ACTIVE=integration-test
+      - JAVA_TOOL_OPTIONS=-Ddrivers.vpcEndpointRegion=us-east-1 -Ddrivers.vpcEndpointUrl=http://localstack:4566
+    depends_on:
+      - localstack-setup
+      - postgresql
+    networks:
+      - docker-localstack-network
