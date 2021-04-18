@@ -25,9 +25,16 @@ buildkite-agent start --spawn 5 --tags "queue=global,queue=infra,queue=dev-aws-o
 
 ``` bash
 cd app
-docker-compose --compose -f docker-compose-integration-tests.yml build 
-docker-compose --compose -f docker-compose-integration-tests.yml up localstack-setup postgresql
+docker-compose -f docker-compose-integration-tests.yml build 
+docker-compose -f docker-compose-integration-tests.yml up localstack-setup postgresql
 docker-compose -f docker-compose-integration-tests.yml run integration-test
+```
+
+``` bash
+cd app
+docker-compose -f docker-compose-acceptance-tests.yml build 
+docker-compose -f docker-compose-acceptance-tests.yml up localstack-setup postgresql
+docker-compose -f docker-compose-acceptance-tests.yml run acceptance-test
 ```
 
 ``` bash

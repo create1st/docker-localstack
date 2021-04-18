@@ -27,3 +27,11 @@ steps:
         run: integration-test
         env:
           - GRADLE_CACHE
+
+  - label: ':gradle: :kotlin: :junit: Acceptance Test'
+    plugins:
+      docker-compose#v3.5.0:
+        config: app/docker-compose-acceptance-tests.yml
+        run: acceptance-test
+        env:
+          - GRADLE_CACHE
