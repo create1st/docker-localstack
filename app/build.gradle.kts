@@ -63,7 +63,7 @@ dependencies {
     runtimeOnly("com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.6")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
-    acceptanceTestImplementation("io.cucumber:cucumber-java8:6.10.2")
+    acceptanceTestImplementation("io.cucumber:cucumber-java8:6.10.3")
     acceptanceTestImplementation("io.cucumber:cucumber-junit:6.10.2")
     acceptanceTestImplementation("io.cucumber:cucumber-spring:6.10.2")
 }
