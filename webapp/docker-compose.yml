@@ -1,0 +1,15 @@
+version: '3.9'
+
+networks:
+  docker-localstack-network:
+
+services:
+
+  web-build:
+    build:
+      context: .
+      dockerfile: image/Dockerfile
+    image: ${IMAGE_NAME:-docker-localstack-webapp}:${IMAGE_VERSION:-local-snapshot}
+    container_name: webapp
+    networks:
+      - docker-localstack-network
