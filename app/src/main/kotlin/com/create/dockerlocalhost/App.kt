@@ -1,11 +1,8 @@
 package com.create.dockerlocalhost
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
+import com.create.dockerlocalhost.config.AppConfig
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
-class App
-
 fun main(args: Array<String>) {
-	runApplication<App>(*args)
+	runApplication<AppConfig>(*args)
 }

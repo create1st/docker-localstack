@@ -3,8 +3,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.5.0"
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.spring") version "1.5.0"
+}
+
+noArg {
+    annotation("software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean")
 }
 
 group = "com.create"
@@ -49,9 +54,10 @@ val acceptanceTestRuntimeOnly: Configuration by configurations.getting {
 }
 
 dependencies {
+    implementation(platform("software.amazon.awssdk:bom:2.16.52"))
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-webflux") // Switch to netty
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.addons:reactor-extra")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
@@ -60,9 +66,15 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.6")
     runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.6")
+    runtimeOnly("com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.6") // replace with v2.0
+    implementation("software.amazon.awssdk:dynamodb-enhanced")
+    implementation("software.amazon.awssdk:kms")
+    implementation("software.amazon.awssdk:sns")
+    implementation("software.amazon.awssdk:sqs")
+    runtimeOnly("software.amazon.awssdk:sts")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
+    testImplementation("com.nhaarman:mockito-kotlin:0.9.0")
     acceptanceTestImplementation("io.cucumber:cucumber-java8:6.10.3")
     acceptanceTestImplementation("io.cucumber:cucumber-junit:6.10.3")
     acceptanceTestImplementation("io.cucumber:cucumber-spring:6.10.3")
@@ -103,7 +115,8 @@ val acceptanceTest = task<Test>("acceptanceTest") {
     doLast {
         javaexec {
             main = "io.cucumber.core.cli.Main"
-            classpath = cucumberRuntime + sourceSets["acceptanceTest"].runtimeClasspath + sourceSets["acceptanceTest"].output
+            classpath =
+                cucumberRuntime + sourceSets["acceptanceTest"].runtimeClasspath + sourceSets["acceptanceTest"].output
             args = listOf("--plugin", "pretty", "--glue", "com.create.dockerlocalhost", "src/acceptanceTest/resources")
         }
     }
@@ -112,8 +125,13 @@ val acceptanceTest = task<Test>("acceptanceTest") {
 tasks.check { dependsOn(integrationTest) }
 
 tasks.register<Exec>("waitForSecretsManager") {
-    val secretsManagerEndpoint = if (isIntegrationTestProfile || isAcceptanceTestProfile) "secretsmanager" else "localhost"
-    commandLine("sh", "-c", "localstack/scripts/wait_for_service.sh 'secretsmanager' 'http://${secretsManagerEndpoint}:4566'")
+    val secretsManagerEndpoint =
+        if (isIntegrationTestProfile || isAcceptanceTestProfile) "secretsmanager" else "localhost"
+    commandLine(
+        "sh",
+        "-c",
+        "localstack/scripts/wait_for_service.sh 'secretsmanager' 'http://${secretsManagerEndpoint}:4566'"
+    )
 }
 
 tasks.register<Exec>("waitForSQS") {

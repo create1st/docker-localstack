@@ -9,7 +9,7 @@ services:
     ports:
       - 4566
     environment:
-      - SERVICES=s3,sns,sqs,secretsmanager # iam,lambda
+      - SERVICES=dynamodb,kms,s3,sns,sqs,secretsmanager # iam,lambda
       - HOSTNAME_EXTERNAL=localstack
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=docker-localhost-key
@@ -17,6 +17,8 @@ services:
     networks:
       docker-localstack-network:
         aliases:
+          - dynamodb
+          - kms
           - s3
           - sns
           - sqs
@@ -29,7 +31,11 @@ services:
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=docker-localhost-key
       - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+      - ACCOUNT_ID=000000000000
+      - DYNAMODB_ENDPOINT=http://dynamodb:4566
+      - KMS_ENDPOINT=http://kms:4566
       - SMS_ENDPOINT=http://secretsmanager:4566
+      - SNS_ENDPOINT=http://sns:4566
       - SQS_ENDPOINT=http://sqs:4566
     depends_on:
       - localstack
@@ -65,6 +71,7 @@ services:
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=docker-localhost-key
       - AWS_SECRET_ACCESS_KEY=docker-localhost-secret
+      - ACCOUNT_ID=000000000000
       - SPRING_PROFILES_ACTIVE=acceptance-test
       - JAVA_TOOL_OPTIONS=-Ddrivers.vpcEndpointRegion=us-east-1 -Ddrivers.vpcEndpointUrl=http://localstack:4566
     depends_on:
