@@ -4,3 +4,18 @@ spring:
     url: jdbc:postgresql://localhost:5432/docker-localstack-db
     username: docker-localstack-user
     password: docker-localstack-password
+cloud:
+  aws:
+    region:
+      static: ${AWS_DEFAULT_REGION}
+    account:
+      id: ${ACCOUNT_ID}
+    kms:
+      endpoint: http://localhost:4566
+      alias: alias/docker-localstack-kms-key
+    sns:
+      endpoint: http://localhost:4566
+    sqs:
+      endpoint: http://localhost:4566
+    dynamodb:
+      endpoint: http://localhost:4566

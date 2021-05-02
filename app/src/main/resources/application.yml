@@ -3,3 +3,18 @@ spring:
     driverClassName: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
     url: create1st/docker_localstack_db/docker_localstack
     username: ${spring.datasource.url}
+cloud:
+  aws:
+    region:
+      static: ${AWS_DEFAULT_REGION}
+    account:
+      id: ${ACCOUNT_ID}
+    kms:
+      endpoint: https://kms.${AWS_DEFAULT_REGION}.amazonaws.com
+      alias: alias/docker-localstack-kms-key
+    sns:
+      endpoint: https://sns.${AWS_DEFAULT_REGION}.amazonaws.com
+    sqs:
+      endpoint: https://sqs.${AWS_DEFAULT_REGION}.amazonaws.com
+    dynamodb:
+      endpoint: https://dynamodb.${AWS_DEFAULT_REGION}.amazonaws.com
