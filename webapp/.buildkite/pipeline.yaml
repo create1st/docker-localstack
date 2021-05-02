@@ -1,0 +1,14 @@
+env:
+  BUILDKITE_CLEAN_CHECKOUT: true
+  IMAGE_NAME: docker-localstack-webapp
+  IMAGE_VERSION: 1.0.${BUILDKITE_BUILD_NUMBER}
+
+  PROFILE_DEV: 'dev'
+
+  BK_AGENT_INFRA: 'app'
+steps:
+  - label: ':node: :react: :typescript: Build'
+    plugins:
+      docker-compose#v3.5.0:
+        config: webapp/docker-compose.yml
+        build: web-build

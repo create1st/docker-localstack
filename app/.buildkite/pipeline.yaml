@@ -1,6 +1,6 @@
 env:
   BUILDKITE_CLEAN_CHECKOUT: true
-  IMAGE_NAME: docker-app
+  IMAGE_NAME: docker-localstack-app
   IMAGE_VERSION: 1.0.${BUILDKITE_BUILD_NUMBER}
   GRADLE_CACHE: /tmp/docker-localstack/${BUILDKITE_BUILD_NUMBER}
 

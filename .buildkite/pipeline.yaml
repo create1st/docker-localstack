@@ -12,8 +12,13 @@ steps:
           watch:
             - path: app/
               config:
-                label: ':gradle: Triggered application update'
+                label: ':gradle: :kotlin: Triggered application update'
                 trigger: docker-localstack-app
+                async: false
+            - path: webapp/
+              config:
+                label: ':node: :react: Triggered web application update'
+                trigger: docker-localstack-webapp
                 async: false
             - path: infrastructure/
               config:
