@@ -8,6 +8,13 @@ env:
 
   BK_AGENT_INFRA: 'app'
 steps:
+  - label: ':buildkite: :shell: Scripts validation'
+    plugins:
+      - shellcheck#v1.1.2:
+          files:
+            - .buildkite/hooks/*.sh
+            - .buildkite/scripts/*.sh
+
   - label: ':gradle: :kotlin: Build'
     plugins:
       - thedyrt/change-directory#v0.1.1:
