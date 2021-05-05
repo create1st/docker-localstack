@@ -63,6 +63,7 @@ docker run -p 80:8080 docker-localstack-webapp:local-snapshot
 * https://github.com/buildkite-plugins/ecr-buildkite-plugin
 * https://github.com/coyainsurance/s3-cache-buildkite-plugin/tags
 * https://github.com/thedyrt/change-directory-buildkite-plugin
+* https://github.com/buildkite-plugins/shellcheck-buildkite-plugin
 
 ### Docker
 
