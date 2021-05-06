@@ -92,6 +92,9 @@ val integrationTest = task<Test>("integrationTest") {
     classpath = sourceSets["integrationTest"].runtimeClasspath
     shouldRunAfter("test")
     dependsOn("waitForSecretsManager", "waitForSQS")
+    addTestOutputListener { testDescriptor, outputEvent ->
+        println(outputEvent.message)
+    }
     if (springActiveProfiles == null) {
         systemProperty("spring.profiles.active", "local")
     }
@@ -147,5 +150,6 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<Test> {
+    testLogging.showStandardStreams = true
     useJUnitPlatform()
 }
