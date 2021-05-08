@@ -22,7 +22,7 @@ RUN apk add --update ca-certificates \
 RUN pip3 install --upgrade awscliv2 \
     && ln -s $(which awscliv2) /usr/local/bin/aws
 
-# Heptio AWS IAM Authenticator for Kubernetes
+# Heptio AWS IAM Authenticator for K8s
 RUN curl -LO "https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v${AWS_IAM_AUTHENTICATOR}/aws-iam-authenticator_${AWS_IAM_AUTHENTICATOR}_linux_amd64" \
     && curl -LO "https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v${AWS_IAM_AUTHENTICATOR}/authenticator_${AWS_IAM_AUTHENTICATOR}_checksums.txt" \
     && echo "$(cat authenticator_${AWS_IAM_AUTHENTICATOR}_checksums.txt | grep linux_amd64)" \
@@ -45,7 +45,7 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master
     && chmod u+x get_helm.sh \
     && ./get_helm.sh
 
-
+# Create K8s config
 COPY helmchart /root/helmchart
 COPY scripts/kubeconfig.sh /usr/local/kubeconfig.sh
 RUN /usr/local/kubeconfig.sh /root/helmchart \
