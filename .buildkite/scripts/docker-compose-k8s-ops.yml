@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   apply:
-    image: ${IMAGE_NAME:-k8s-ci-di}:${IMAGE_VERSION:-local-snapshot}
+    image: ${IMAGE_NAME:-k8s-ci-cd}:${IMAGE_VERSION:-local-snapshot}
     environment:
       - AWS_SHARED_CREDENTIALS_FILE=/root/.aws/credentials
       - AWS_SESSION_TOKEN
@@ -16,6 +16,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.docker:/root/.docker:ro
       - ${HOME}/.aws:/root/.aws:ro
-      - ${PWD}:/root/scripts
+      - ${PWD}/.buildkite/scripts:/root/scripts
     working_dir: /root/scripts
-    entrypoint: k8s-${K8S_ACTION}.sh
+    entrypoint: ./k8s-${K8S_ACTION}.sh

@@ -9,4 +9,4 @@ steps:
     plugins:
       docker-compose#v3.5.0:
         config: .buildkite/image/docker-compose.yml
-        build: k8s-ci-di
+        build: k8s-ci-cd

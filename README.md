@@ -10,7 +10,7 @@
 # docker-localstack
 Docker + localstack + Buildkite
 
-``` shell
+```shell
 docker network create docker-localstack-network
 docker-compose -f docker-compose-localstack.yaml up
 
@@ -23,39 +23,40 @@ bk run .buildkite/pipeline-k8s-ops.yaml
 buildkite-agent start --spawn 5 --tags "queue=global,queue=infra,queue=dev-aws-ops,queue=dev-k8s-ops,queue=app"
 ```
 
-``` shell
+```shell
 cd app
 docker-compose -f docker-compose-integration-tests.yml build 
 docker-compose -f docker-compose-integration-tests.yml up localstack-setup postgresql
 docker-compose -f docker-compose-integration-tests.yml run integration-test
 ```
 
-``` shell
+```shell
 cd app
 docker-compose -f docker-compose-acceptance-tests.yml build 
 docker-compose -f docker-compose-acceptance-tests.yml up localstack-setup postgresql
 docker-compose -f docker-compose-acceptance-tests.yml run acceptance-test
 ```
 
-``` shell
+```shell
 bk run app/.buildkite/pipeline.yaml
 bk run webapp/.buildkite/pipeline.yaml
 ```
 
 # IntelliJ
-``` shell
+```shell
 cd app
 docker-compose -f docker-compose-local.yml build
 docker-compose -f docker-compose-local.yml up
 ```
 
 # Run Web application
-``` shell
+```shell
 docker run -p 80:8080 docker-localstack-webapp:local-snapshot
 ```
 
 # K8s
 ```shell
+docker-comdocker -f .buildkite/image/docker-compose.yml build k8s-ci-cd
 bk run .buildkite/pipeline-k8s-ci-di-image.yaml
 ```
 ### Buildkite
