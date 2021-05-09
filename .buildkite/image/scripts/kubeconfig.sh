@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 mkdir -p /tmp/build
 helm template $1 --output-dir /tmp/build

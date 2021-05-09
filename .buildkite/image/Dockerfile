@@ -22,6 +22,11 @@ RUN apk add --update ca-certificates \
 RUN pip3 install --upgrade awscliv2 \
     && ln -s $(which awscliv2) /usr/local/bin/aws
 
+# AWS Eksctl
+RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp \
+    && chmod u+x /tmp/eksctl \
+    && mv /tmp/eksctl /usr/local/bin
+
 # Heptio AWS IAM Authenticator for K8s
 RUN curl -LO "https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v${AWS_IAM_AUTHENTICATOR}/aws-iam-authenticator_${AWS_IAM_AUTHENTICATOR}_linux_amd64" \
     && curl -LO "https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v${AWS_IAM_AUTHENTICATOR}/authenticator_${AWS_IAM_AUTHENTICATOR}_checksums.txt" \

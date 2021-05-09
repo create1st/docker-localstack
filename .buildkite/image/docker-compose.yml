@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+
+  k8s-ci-cd:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${IMAGE_NAME:-k8s-ci-cd}:${IMAGE_VERSION:-local-snapshot}
