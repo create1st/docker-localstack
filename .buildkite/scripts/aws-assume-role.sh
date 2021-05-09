@@ -1,10 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -uexo pipefail
 
-AWS_SECRET_ID="docker-localstack-aws-secret"
-AWS_IAM_ROLE_NAME="docker-localstack-aws-role"
-
+AWS_IAM_ROLE_NAME="${AWS_IAM_ROLE_NAME:-docker-localstack-aws-role}"
 AWS_IAM_ACCOUNT=$(buildkite-agent meta-data get "AWS_IAM_ACCOUNT")
 
 echo "Assuming role: '${AWS_IAM_ACCOUNT}'"

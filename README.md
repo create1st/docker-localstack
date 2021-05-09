@@ -54,7 +54,10 @@ docker-compose -f docker-compose-local.yml up
 docker run -p 80:8080 docker-localstack-webapp:local-snapshot
 ```
 
-
+# K8s
+```shell
+bk run .buildkite/pipeline-k8s-ci-di-image.yaml
+```
 ### Buildkite
 * https://github.com/chronotc/monorepo-diff-buildkite-plugin
 * https://github.com/buildkite-plugins/docker-compose-buildkite-plugin

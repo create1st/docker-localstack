@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -ue
 export AWS_SESSION_TOKEN=
 export AWS_ACCESS_KEY_ID=

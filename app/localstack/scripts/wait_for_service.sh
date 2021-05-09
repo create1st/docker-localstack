@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function wait_for_service() {
   echo "Connecting to $1 service at endpoint $2/health"

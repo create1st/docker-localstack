@@ -4,7 +4,11 @@ env:
   K8S_ACTION_START: 'start'
   K8S_ACTION_STOP: 'stop'
 
-  AWS_IAM_ACCOUNT_DEV: 'AWS_IAM_ACCOUNT_DEV'
+  PROFILE_DEV: 'dev'
+  AWS_IAM_ACCOUNT_DEV: '123456789012'
+  AWS_IAM_ROLE_NAME: 'K8sManagementRole'
+  K8S_CLUSTER_NAME: 'k8s'
+  K8S_NAMESPACE: 'training'
 
   BK_AGENT_DEVOPS: 'dev-k8s-ops'
 steps:
@@ -18,7 +22,7 @@ steps:
           - label: 'Stop'
             value: ${K8S_ACTION_STOP}
         key: K8S_ACTION
-        requires: true
+        required: true
       - select: 'Select environment'
         options:
           - label: 'Development'
@@ -30,12 +34,17 @@ steps:
         required: true
 
   - label: ':k8s: Starting action'
+#    branches: 'main'
     command: '.buildkite/scripts/k8s-ops.sh'
     agents:
       queue: ${BK_AGENT_DEVOPS}
+    env:
+      PROFILE: ${PROFILE_DEV}
+      - K8S_CLUSTER_NAME
+      - K8S_NAMESPACE
 
   - label: ':buildkite: Annotate build'
-    #    branches: 'main'
+#    branches: 'main'
     command: '.buildkite/scripts/bk-annotate.sh'
     agents:
       queue: ${BK_AGENT_DEVOPS}
