@@ -3,7 +3,7 @@ env:
 
   AWS_ACTION_ROTATE_SECRETS: 'rotate-secrets'
 
-  AWS_IAM_ACCOUNT_DEV: 'AWS_IAM_ACCOUNT_DEV'
+  AWS_IAM_ROLE_DEV: "arn:aws:iam::123456789012:role/AwsManagementRole"
 
   BK_AGENT_DEVOPS: 'dev-aws-ops'
 steps:
@@ -12,15 +12,15 @@ steps:
       - select: 'Select operation'
         options:
           - label: 'Rotate secrets'
-            value: ${ACTION_AWS_ROTATE_SECRETS}
+            value: ${AWS_ACTION_ROTATE_SECRETS}
         key: AWS_ACTION
-        requires: true
+        required: true
       - select: 'Select environment'
         options:
           - label: 'Development'
-            value: ${AWS_IAM_ACCOUNT_DEV}
-        key: AWS_IAM_ACCOUNT
-        requires: true
+            value: ${AWS_IAM_ROLE_DEV}
+        key: AWS_IAM_ROLE
+        required: true
       - text: 'Reason?'
         key: BK_ACTION_REASON
         required: true

@@ -6,7 +6,7 @@ env:
 
   PROFILE_DEV: 'dev'
   AWS_IAM_ACCOUNT_DEV: '123456789012'
-  AWS_IAM_ROLE_NAME: 'K8sManagementRole'
+  AWS_IAM_ROLE_DEV: "arn:aws:iam::123456789012:role/AwsManagementRole"
   K8S_CLUSTER_NAME: 'k8s'
   K8S_NAMESPACE: 'training'
 
@@ -26,8 +26,8 @@ steps:
       - select: 'Select environment'
         options:
           - label: 'Development'
-            value: ${AWS_IAM_ACCOUNT_DEV}
-        key: AWS_IAM_ACCOUNT
+            value: ${AWS_IAM_ROLE_DEV}
+        key: AWS_IAM_ROLE
         requires: true
       - text: 'Reason?'
         key: BK_ACTION_REASON
