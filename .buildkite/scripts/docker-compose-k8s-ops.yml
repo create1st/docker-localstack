@@ -4,6 +4,7 @@ services:
 
   apply:
     image: ${IMAGE_NAME:-k8s-ci-cd}:${IMAGE_VERSION:-local-snapshot}
+    container_name: k8s-ops
     environment:
       - AWS_SHARED_CREDENTIALS_FILE=/root/.aws/credentials
       - AWS_SESSION_TOKEN

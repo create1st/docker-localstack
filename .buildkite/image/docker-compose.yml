@@ -7,3 +7,4 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ${IMAGE_NAME:-k8s-ci-cd}:${IMAGE_VERSION:-local-snapshot}
+    container_name: k8s-ci-cd
