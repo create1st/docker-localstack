@@ -75,7 +75,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
-    acceptanceTestImplementation("io.cucumber:cucumber-java8:6.10.3")
+    acceptanceTestImplementation("io.cucumber:cucumber-java8:6.10.4")
     acceptanceTestImplementation("io.cucumber:cucumber-junit:6.10.3")
     acceptanceTestImplementation("io.cucumber:cucumber-spring:6.10.3")
 }
