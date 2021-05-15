@@ -54,7 +54,7 @@ val acceptanceTestRuntimeOnly: Configuration by configurations.getting {
 }
 
 dependencies {
-    implementation(platform("software.amazon.awssdk:bom:2.16.60"))
+    implementation(platform("software.amazon.awssdk:bom:2.16.62"))
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-webflux") // Switch to netty
