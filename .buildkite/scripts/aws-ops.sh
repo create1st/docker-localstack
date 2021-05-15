@@ -4,12 +4,13 @@ set -uexo pipefail
 
 AWS_ACTION_ROTATE_SECRETS="rotate-secrets"
 AWS_ACTION=$(buildkite-agent meta-data get "AWS_ACTION")
+AWS_IAM_ROLE=$(buildkite-agent meta-data get "AWS_IAM_ROLE")
 
 echo "Executing '${AWS_ACTION}'"
 
 SCRIPTS_HOME=$(dirname "$0")
 # shellcheck source=aws-assume-role.sh
-source "${SCRIPTS_HOME}"/aws-assume-role.sh
+source "${SCRIPTS_HOME}"/aws-assume-role.sh "${AWS_IAM_ROLE}"
 
 case ${AWS_ACTION} in
 "${AWS_ACTION_ROTATE_SECRETS}")

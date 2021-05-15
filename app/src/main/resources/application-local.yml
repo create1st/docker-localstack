@@ -7,7 +7,7 @@ spring:
 cloud:
   aws:
     region:
-      static: ${AWS_DEFAULT_REGION}
+      static: ${AWS_DEFAULT_REGION:-us-east-1}
     account:
       id: ${ACCOUNT_ID}
     kms:

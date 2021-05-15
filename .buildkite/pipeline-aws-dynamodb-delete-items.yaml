@@ -1,0 +1,40 @@
+env:
+  BUILDKITE_CLEAN_CHECKOUT: true
+
+  PROFILE_DEV: 'dev'
+
+  BK_AGENT_DEVOPS: 'dev-aws-ops'
+steps:
+  - block: ':aws: :dynamodb: AWS dynamodb delete all items'
+    fields:
+      - select: ':aws: Target Environment'
+        key: PROFILE
+        default: ${PROFILE_DEV}
+        hint: ':aws: AWS target environment'
+        options:
+          - label: 'Development'
+            value: ${PROFILE_DEV}
+        required: true
+      - select: ':docker: Application'
+        key: AWS_APP
+        default: 'docker-localstack'
+        hint: ':docker: Affected application'
+        options:
+          - label: 'Docker localstack test application'
+            value: 'docker-localstack'
+        required: true
+      - text: 'Reason?'
+        key: BK_ACTION_REASON
+        required: true
+
+  - label: ':buildkite: Create pipeline'
+    branches: 'main'
+    command: '.buildkite/scripts/bk-create-pipeline.sh aws-dynamodb-delete-items-pipeline | buildkite-agent pipeline upload'
+    agents:
+      queue: ${BK_AGENT_DEVOPS}
+
+  - label: ':buildkite: Annotate build'
+    branches: 'main'
+    command: '.buildkite/scripts/bk-annotate.sh'
+    agents:
+      queue: ${BK_AGENT_DEVOPS}

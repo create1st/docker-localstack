@@ -1,6 +1,10 @@
 Feature: Test app
 
-  Scenario: Test app
-    Given App is running
-    When New message
-    Then Message should be persisted
+  Scenario Outline: Process order
+    Given Order with status "<Order Status>"
+    When Order status is Accepted
+    Then Order is sent to execution
+    Examples:
+      | Order Status |
+      | New          |
+      | Postponed    |

@@ -1,0 +1,10 @@
+env:
+  BUILDKITE_CLEAN_CHECKOUT: true
+
+  AWS_IAM_ROLE: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/AwsManagementRole"
+steps:
+  - label: ':aws: :dynamodb: Deleting all items in ${PROFILE_NAME}'
+    branches: 'main'
+    command: '.buildkite/scripts/aws-dynamodb-delete-items.sh ${ESC_DOLLAR}{AWS_IAM_ROLE} .buildkite/scripts/aws/dynamodb/${AWS_APP}-tables.txt'
+    agents:
+      queue: ${BK_AGENT}

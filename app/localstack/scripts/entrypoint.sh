@@ -96,7 +96,7 @@ list_kms_aliases
 create_topic "docker-localstack-topic"
 create_queue "docker-localstack-queue"
 create_topic_subscription "docker-localstack-topic" "docker-localstack-queue"
-create_dynamodb_table "docker-localstack-table" \
+create_dynamodb_table "docker-localstack-order-table" \
   "AttributeName=userId,AttributeType=S" \
   "AttributeName=transactionId,AttributeType=S" \
   "AttributeName=userId,KeyType=HASH" \
