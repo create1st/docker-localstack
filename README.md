@@ -70,4 +70,7 @@ bk run .buildkite/pipeline-k8s-ci-di-image.yaml
 * https://github.com/buildkite-plugins/shellcheck-buildkite-plugin
 
 ### Docker
-
+```shell
+export DOCKER_BUILDKIT=0
+export COMPOSE_DOCKER_CLI_BUILD=0
+```

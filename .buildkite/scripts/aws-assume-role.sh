@@ -2,7 +2,7 @@
 
 set -uexo pipefail
 
-AWS_IAM_ROLE=$(buildkite-agent meta-data get "AWS_IAM_ROLE")
+AWS_IAM_ROLE="${1}"
 
 echo "Assuming role: '${AWS_IAM_ROLE}'"
 echo "Build: ${BUILDKITE_BUILD_NUMBER}"

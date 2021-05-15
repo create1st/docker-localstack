@@ -8,5 +8,6 @@ import org.springframework.context.annotation.Import
 @EnableAutoConfiguration
 @Import(
     AwsConfig::class,
+    RepositoryConfig::class,
 )
 class AppConfig
