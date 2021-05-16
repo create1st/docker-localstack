@@ -13,7 +13,7 @@ env:
   BK_AGENT_DEVOPS: 'dev-k8s-ops'
 steps:
   - block: ':k8s: DevOps'
-#    branches: "main"
+    branches: "main"
     fields:
       - select: 'Select operation'
         options:

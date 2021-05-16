@@ -1,36 +1,59 @@
 env:
   BUILDKITE_CLEAN_CHECKOUT: true
 
-  AWS_ACTION_ROTATE_SECRETS: 'rotate-secrets'
-
-  AWS_IAM_ROLE_DEV: "arn:aws:iam::123456789012:role/AwsManagementRole"
+  BK_PIPELINE_TEMPLATE_ROTATE_SECRETS: 'aws-secrets-manager-rotate-secret-pipeline'
+  AWS_IAM_ACCOUNT_DEV: '123456789012'
+  AWS_IAM_ACCOUNT_PRD: '234567890123'
+  PROFILE_DEV: 'dev'
+  PROFILE_PRD: 'prd'
+  BK_AGENT_DEV: 'dev-aws-ops'
+  BK_AGENT_PRD: 'prd-aws-ops'
 
   BK_AGENT_DEVOPS: 'dev-aws-ops'
 steps:
-  - block: ':aws: DevOps'
+  - block: ':aws: AWS DevOps'
     fields:
-      - select: 'Select operation'
-        options:
-          - label: 'Rotate secrets'
-            value: ${AWS_ACTION_ROTATE_SECRETS}
-        key: AWS_ACTION
-        required: true
-      - select: 'Select environment'
+      - select: ':aws: Target Environment'
+        key: PROFILE
+        default: ${PROFILE_DEV}
+        hint: ':aws: AWS target environment'
         options:
           - label: 'Development'
-            value: ${AWS_IAM_ROLE_DEV}
-        key: AWS_IAM_ROLE
+            value: ${PROFILE_DEV}
+          - label: 'Production'
+            value: ${PROFILE_PRD}
+        required: true
+      - select: ':docker: Application'
+        key: AWS_APP
+        default: 'docker-localstack'
+        hint: ':docker: Affected application'
+        options:
+          - label: 'Docker localstack test application'
+            value: 'docker-localstack'
+        required: true
+      - select: ':buildkite: Select operation'
+        key: TEMPLATE_NAME
+        options:
+          - label: ':aws: :secret: Rotate secrets'
+            value: ${BK_PIPELINE_TEMPLATE_ROTATE_SECRETS}
         required: true
       - text: 'Reason?'
         key: BK_ACTION_REASON
         required: true
-  
-  - label: ':aws: DevOps Apply'
+
+  - label: ':buildkite: Create pipeline'
     branches: 'main'
-    command: '.buildkite/scripts/aws-ops.sh'
+    command: '.buildkite/scripts/bk-create-pipeline.sh | buildkite-agent pipeline upload'
     agents:
       queue: ${BK_AGENT_DEVOPS}
-      
+    env:
+      AWS_IAM_ACCOUNT_DEV: ${AWS_IAM_ACCOUNT_DEV}
+      AWS_IAM_ACCOUNT_PRD: ${AWS_IAM_ACCOUNT_PRD}
+      PROFILE_DEV: ${PROFILE_DEV}
+      PROFILE_PRD: ${PROFILE_PRD}
+      BK_AGENT_DEV: ${BK_AGENT_DEV}
+      BK_AGENT_PRD: ${BK_AGENT_PRD}
+
   - label: ':buildkite: Annotate build'
     branches: 'main'
     command: '.buildkite/scripts/bk-annotate.sh'

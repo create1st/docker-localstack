@@ -7,4 +7,4 @@ steps:
     branches: 'main'
     command: '.buildkite/scripts/aws-dynamodb-delete-items.sh ${ESC_DOLLAR}{AWS_IAM_ROLE} .buildkite/scripts/aws/dynamodb/${AWS_APP}-tables.txt'
     agents:
-      queue: ${BK_AGENT}
+      queue: '${BK_AGENT}'

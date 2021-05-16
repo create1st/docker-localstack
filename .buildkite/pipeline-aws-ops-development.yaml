@@ -1,11 +1,17 @@
 env:
   BUILDKITE_CLEAN_CHECKOUT: true
 
+  BK_PIPELINE_TEMPLATE_DYNAMO_DELETE_ALL_ITEMS: 'aws-dynamodb-delete-items-pipeline'
+  AWS_IAM_ACCOUNT_DEV: '123456789012'
+  AWS_IAM_ACCOUNT_PRD: 'unsupported'
   PROFILE_DEV: 'dev'
+  PROFILE_PRD: 'prd'
+  BK_AGENT_DEV: 'dev-aws-ops'
+  BK_AGENT_PRD: 'prd-aws-ops'
 
   BK_AGENT_DEVOPS: 'dev-aws-ops'
 steps:
-  - block: ':aws: :dynamodb: AWS dynamodb delete all items'
+  - block: ':aws: AWS DevOps development'
     fields:
       - select: ':aws: Target Environment'
         key: PROFILE
@@ -23,15 +29,28 @@ steps:
           - label: 'Docker localstack test application'
             value: 'docker-localstack'
         required: true
+      - select: ':buildkite: Select operation'
+        key: TEMPLATE_NAME
+        options:
+          - label: ':aws: :dynamodb: AWS dynamodb delete all items'
+            value: ${BK_PIPELINE_TEMPLATE_DYNAMO_DELETE_ALL_ITEMS}
+        required: true
       - text: 'Reason?'
         key: BK_ACTION_REASON
         required: true
 
   - label: ':buildkite: Create pipeline'
     branches: 'main'
-    command: '.buildkite/scripts/bk-create-pipeline.sh aws-dynamodb-delete-items-pipeline | buildkite-agent pipeline upload'
+    command: '.buildkite/scripts/bk-create-pipeline.sh | buildkite-agent pipeline upload'
     agents:
       queue: ${BK_AGENT_DEVOPS}
+    env:
+      AWS_IAM_ACCOUNT_DEV: ${AWS_IAM_ACCOUNT_DEV}
+      AWS_IAM_ACCOUNT_PRD: ${AWS_IAM_ACCOUNT_PRD}
+      PROFILE_DEV: ${PROFILE_DEV}
+      PROFILE_PRD: ${PROFILE_PRD}
+      BK_AGENT_DEV: ${BK_AGENT_DEV}
+      BK_AGENT_PRD: ${BK_AGENT_PRD}
 
   - label: ':buildkite: Annotate build'
     branches: 'main'
