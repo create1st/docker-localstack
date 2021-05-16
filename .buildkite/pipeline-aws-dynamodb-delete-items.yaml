@@ -1,8 +1,13 @@
 env:
   BUILDKITE_CLEAN_CHECKOUT: true
 
+  AWS_IAM_ACCOUNT_DEV: '123456789012'
+  AWS_IAM_ACCOUNT_PRD: '234567890123'
   PROFILE_DEV: 'dev'
-
+  PROFILE_PRD: 'prd'
+  BK_AGENT_DEV: 'dev-aws-ops'
+  BK_AGENT_PRD: 'prd-aws-ops'
+  
   BK_AGENT_DEVOPS: 'dev-aws-ops'
 steps:
   - block: ':aws: :dynamodb: AWS dynamodb delete all items'
@@ -32,6 +37,13 @@ steps:
     command: '.buildkite/scripts/bk-create-pipeline.sh aws-dynamodb-delete-items-pipeline | buildkite-agent pipeline upload'
     agents:
       queue: ${BK_AGENT_DEVOPS}
+    env:
+      AWS_IAM_ACCOUNT_DEV: ${AWS_IAM_ACCOUNT_DEV}
+      AWS_IAM_ACCOUNT_PRD: ${AWS_IAM_ACCOUNT_PRD}
+      PROFILE_DEV: ${PROFILE_DEV}
+      PROFILE_PRD: ${PROFILE_PRD}
+      BK_AGENT_DEV: ${BK_AGENT_DEV}
+      BK_AGENT_PRD: ${BK_AGENT_PRD}
 
   - label: ':buildkite: Annotate build'
     branches: 'main'

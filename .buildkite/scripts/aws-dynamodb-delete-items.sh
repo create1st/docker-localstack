@@ -22,9 +22,9 @@ function delete_items() {
 
 AWS_IAM_ROLE="$1"
 DYNAMODB_TABLE_LIST_FILE="$2"
-SCRIPTS_PATH=$(dirname "$0")
+SCRIPTS_HOME=$(dirname "$0")
 # shellcheck source=formatting.sh
-source "${SCRIPTS_PATH}"/formatting.sh
+source "${SCRIPTS_HOME}"/formatting.sh
 # shellcheck source=aws-assume-role.sh
 source "${SCRIPTS_HOME}"/aws-assume-role.sh "${AWS_IAM_ROLE}"
 

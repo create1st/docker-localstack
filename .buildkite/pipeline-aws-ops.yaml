@@ -4,6 +4,12 @@ env:
   AWS_ACTION_ROTATE_SECRETS: 'rotate-secrets'
 
   AWS_IAM_ROLE_DEV: "arn:aws:iam::123456789012:role/AwsManagementRole"
+  AWS_IAM_ACCOUNT_DEV: '123456789012'
+  AWS_IAM_ACCOUNT_PRD: '234567890123'
+  PROFILE_DEV: 'dev'
+  PROFILE_PRD: 'prd'
+  BK_AGENT_DEV: 'dev-aws-ops'
+  BK_AGENT_PRD: 'prd-aws-ops'
 
   BK_AGENT_DEVOPS: 'dev-aws-ops'
 steps:
