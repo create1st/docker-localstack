@@ -2,11 +2,10 @@
 
 set -uexo pipefail
 
-TEMPLATE_NAME="${1}"
 SCRIPTS_HOME=$(dirname "$0")
 
 # shellcheck source=bk-export-meta-data.sh
-source "${SCRIPTS_HOME}"/bk-export-meta-data.sh PROFILE AWS_APP
+source "${SCRIPTS_HOME}"/bk-export-meta-data.sh PROFILE AWS_APP TEMPLATE_NAME
 # shellcheck source=bk-set-env.sh
 source "${SCRIPTS_HOME}"/bk-set-env.sh "${PROFILE}"
 
