@@ -75,3 +75,7 @@ bk run .buildkite/pipeline-k8s-ci-di-image.yaml
 export DOCKER_BUILDKIT=0
 export COMPOSE_DOCKER_CLI_BUILD=0
 ```
+
+# AWS
+Rotate password
+https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_db-rotate.html

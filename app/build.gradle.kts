@@ -60,6 +60,7 @@ dependencies {
         exclude(group="org.springframework.boot", module="spring-boot-starter-tomcat")
     }
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.addons:reactor-extra")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
@@ -68,11 +69,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.6")
     runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.6") // replace with v2.0
     implementation("software.amazon.awssdk:dynamodb-enhanced")
     implementation("software.amazon.awssdk:kms")
     implementation("software.amazon.awssdk:sns")
     implementation("software.amazon.awssdk:sqs")
+    implementation("software.amazon.awssdk:secretsmanager")
     runtimeOnly("software.amazon.awssdk:sts")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

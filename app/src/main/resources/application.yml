@@ -1,8 +1,10 @@
 spring:
   datasource:
-    driverClassName: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
-    url: create1st/docker_localstack_db/docker_localstack
-    username: ${spring.datasource.url}
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/docker-localstack-db
+    aws:
+      secret: create1st/docker_localstack_db/docker_localstack
+
 cloud:
   aws:
     region:
@@ -16,5 +18,7 @@ cloud:
       endpoint: https://sns.${AWS_DEFAULT_REGION}.amazonaws.com
     sqs:
       endpoint: https://sqs.${AWS_DEFAULT_REGION}.amazonaws.com
+    secretsmanager:
+      endpoint: http://localhost:4566
     dynamodb:
       endpoint: https://dynamodb.${AWS_DEFAULT_REGION}.amazonaws.com
