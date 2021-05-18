@@ -9,7 +9,7 @@ function die() {
 
 function validate() {
   local ARGUMENT=$1
-  [[ "${ARGUMENT}" =~ ^[A-Za-z0-9_\-]+$ ]] || die "Invalid argument: ${ARGUMENT}"
+  [[ "${ARGUMENT}" =~ ^[A-Za-z0-9_-]+$ ]] || die "Invalid argument: ${ARGUMENT}"
 }
 
 function set_environment() {
