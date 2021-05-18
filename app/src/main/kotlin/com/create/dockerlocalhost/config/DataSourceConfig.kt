@@ -28,7 +28,6 @@ class DataSourceConfig {
         private const val AWS_SECRET_DATABASE_NAME = "dbname"
 
         private val EMPTY_PROPERTIES = Properties()
-        private val EMPTY_PROPERTY_SOURCE = PropertiesPropertySource(AWS_DATA_SOURCE_PROPERTIES, EMPTY_PROPERTIES)
 
         private val logger = KotlinLogging.logger {}
     }
@@ -41,9 +40,9 @@ class DataSourceConfig {
         awsSecretDataSourceProperties: AwsSecretDataSourceProperties,
         dataSourceProperties: DataSourceProperties
     ): DataSourceProperties {
-        val properties = getAwsDataSourcePropertySource(
-            awsSecretDataSourceProperties,
+        val properties = findAwsDataSourceProperties(
             secretsManagerAsyncClient,
+            awsSecretDataSourceProperties,
             dataSourceProperties
         )
         if (properties.isEmpty) {
@@ -56,13 +55,13 @@ class DataSourceConfig {
         return dataSourceProperties
     }
 
-    private fun getAwsDataSourcePropertySource(
-        awsSecretDataSourceProperties: AwsSecretDataSourceProperties,
+    private fun findAwsDataSourceProperties(
         secretsManagerAsyncClient: SecretsManagerAsyncClient,
+        awsSecretDataSourceProperties: AwsSecretDataSourceProperties,
         dataSourceProperties: DataSourceProperties
     ): Properties {
         if (!awsSecretDataSourceProperties.secret.isNullOrEmpty()) {
-            return getAwsDataSourcePropertySource(
+            return getAwsDataSourceProperties(
                 secretsManagerAsyncClient,
                 awsSecretDataSourceProperties,
                 dataSourceProperties
@@ -71,7 +70,7 @@ class DataSourceConfig {
         return EMPTY_PROPERTIES
     }
 
-    private fun getAwsDataSourcePropertySource(
+    private fun getAwsDataSourceProperties(
         secretsManagerAsyncClient: SecretsManagerAsyncClient,
         awsSecretDataSourceProperties: AwsSecretDataSourceProperties,
         dataSourceProperties: DataSourceProperties
