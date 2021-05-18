@@ -56,8 +56,10 @@ val acceptanceTestRuntimeOnly: Configuration by configurations.getting {
 dependencies {
     implementation(platform("software.amazon.awssdk:bom:2.16.64"))
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-webflux") // Switch to netty
+    implementation("org.springframework.boot:spring-boot-starter-data-rest") {
+        exclude(group="org.springframework.boot", module="spring-boot-starter-tomcat")
+    }
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.addons:reactor-extra")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
