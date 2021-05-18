@@ -28,7 +28,6 @@ class DataSourceConfig {
         private const val AWS_SECRET_DATABASE_NAME = "dbname"
 
         private val EMPTY_PROPERTIES = Properties()
-        private val EMPTY_PROPERTY_SOURCE = PropertiesPropertySource(AWS_DATA_SOURCE_PROPERTIES, EMPTY_PROPERTIES)
 
         private val logger = KotlinLogging.logger {}
     }
