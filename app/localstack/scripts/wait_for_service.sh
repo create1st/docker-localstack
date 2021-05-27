@@ -1,12 +1,30 @@
 #!/usr/bin/env bash
 
 function wait_for_service() {
-  echo "Connecting to $1 service at endpoint $2/health"
-  until $(curl --silent --fail $2/health | grep "\"$1\": \"running\"" >/dev/null); do
-    sleep 5
-    echo "Waiting for $1 service to be ready..."
-  done
-  echo "$1 service is ready"
+  local SERVICE=$1
+  local HOST=$2
+  local MAX_RETRIES=$3
+  local HEALTH_ENDPOINT="${HOST}/health"
+  local RETRY_COUNT=1
+  local RUNNING
+  echo "Connecting to ${SERVICE} service at endpoint ${HEALTH_ENDPOINT}"
+  while
+    curl --silent --fail "${HEALTH_ENDPOINT}" | grep "\"${SERVICE}\": \"running\"" >/dev/null
+    RUNNING=$?
+    if [[ "${RUNNING}" -ne 0 ]]; then
+      sleep 5
+      echo "Waiting for $1 service to be ready. Retrying ${RETRY_COUNT}..."
+    fi
+    ((RETRY_COUNT=RETRY_COUNT+1))
+    [[ "${RUNNING}" -ne 0 && "${RETRY_COUNT}" -lt ${MAX_RETRIES} ]]
+  do :; done
+  if [[ "${RUNNING}" -eq 0 ]]; then
+    echo "${SERVICE} service is ready"
+  else
+    echo "${SERVICE} service is NOT ready"
+  fi
 }
 
-wait_for_service "$1" "$2"
+SERVICE=$1
+HOST=$2
+wait_for_service "${SERVICE}" "${HOST}" 15
