@@ -54,7 +54,7 @@ val acceptanceTestRuntimeOnly: Configuration by configurations.getting {
 }
 
 dependencies {
-    implementation(platform("software.amazon.awssdk:bom:2.16.73"))
+    implementation(platform("software.amazon.awssdk:bom:2.16.76"))
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-rest") {
         exclude(group="org.springframework.boot", module="spring-boot-starter-tomcat")
