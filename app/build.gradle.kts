@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.5.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jetbrains.kotlin.plugin.noarg") version "1.5.10"
+    id("com.google.cloud.tools.jib") version "3.0.0"
     kotlin("jvm") version "1.5.10"
     kotlin("plugin.spring") version "1.5.10"
 }
@@ -12,7 +13,7 @@ noArg {
     annotation("software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean")
 }
 
-group = "com.create"
+group = "com.craftandtechnology"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
@@ -56,10 +57,8 @@ val acceptanceTestRuntimeOnly: Configuration by configurations.getting {
 dependencies {
     implementation(platform("software.amazon.awssdk:bom:2.16.77"))
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest") {
-        exclude(group="org.springframework.boot", module="spring-boot-starter-tomcat")
-    }
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.addons:reactor-extra")
@@ -149,4 +148,25 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     testLogging.showStandardStreams = true
     useJUnitPlatform()
+}
+
+jib {
+    from {
+        image = "openjdk:15.0.2"
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+    to {
+        image = "craftandtechnology/docker-localstack"
+        tags = setOf("latest", project.version.toString())
+    }
+    container {
+        jvmFlags = listOf("-Xms1024m", "-Xmx2048m")
+        ports = listOf("8080")
+        workingDirectory = "/app"
+    }
 }
