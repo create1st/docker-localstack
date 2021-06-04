@@ -74,6 +74,18 @@ kubectl port-forward $(kubectl get pods | grep localstack | awk {'print $1}') 45
 localstack.init.k8s.sh
 ```
 
+JIB
+```shell
+cd app
+gradle clean build test jib -x integrationTest -x acceptanceTest
+docker image rm craftandtechnology/docker-localstack:latest
+#docker pull craftandtechnology/docker-localstack:latest
+docker-compose up
+docker-compose rm -f
+docker image rm craftandtechnology/docker-localstack:latest
+```
+
+
 ### Buildkite
 
 * https://github.com/chronotc/monorepo-diff-buildkite-plugin

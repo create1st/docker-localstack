@@ -93,7 +93,7 @@ echo "####################################################"
 "${SCRIPTS_PATH}"/wait_for_service.sh "sns" "$SNS_ENDPOINT"
 "${SCRIPTS_PATH}"/wait_for_service.sh "sqs" "$SQS_ENDPOINT"
 
-create_secret "create1st/docker_localstack_db/docker_localstack" "file://${CREDENTIALS_PATH}/credentials.json"
+create_secret "craftandtechnology/docker_localstack_db/docker_localstack" "file://${CREDENTIALS_PATH}/credentials.json"
 create_key_with_alias "alias/docker-localstack-kms-key"
 list_kms_aliases
 create_topic "docker-localstack-topic"

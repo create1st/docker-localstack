@@ -1,7 +1,9 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/docker-localstack-db
     aws:
       secret: craftandtechnology/docker_localstack_db/docker_localstack
 cloud:
@@ -11,13 +13,14 @@ cloud:
     account:
       id: ${ACCOUNT_ID}
     kms:
-      endpoint: http://localhost:4566
+      endpoint: http://localstack:4566
       alias: alias/docker-localstack-kms-key
     sns:
-      endpoint: http://localhost:4566
+      endpoint: http://localstack:4566
     sqs:
-      endpoint: http://localhost:4566
+      endpoint: http://localstack:4566
     secretsmanager:
-      endpoint: http://localhost:4566
+      endpoint: http://localstack:4566
     dynamodb:
-      endpoint: http://localhost:4566
+      endpoint: http://localstack:4566
+
