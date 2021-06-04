@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: localstack
+  namespace: default
+  labels:
+    name: localstack
+    app: localstack
+spec:
+  selector:
+    matchLabels:
+      app: localstack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: localstack
+    spec:
+      containers:
+        - name: localstack
+          image: localstack/localstack:0.12.9.1
+          ports:
+            - containerPort: 4566
+              name: edge
+            - containerPort: 4571
+              name: es
+          env:
+            - name: SERVICES
+              value: dynamodb,kms,s3,sns,sqs,secretsmanager
+#            - name: HOSTNAME_EXTERNAL
+#              value: localhost
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: edge
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: edge
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1

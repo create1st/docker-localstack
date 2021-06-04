@@ -72,6 +72,9 @@ function create_dynamodb_table() {
     --provisioned-throughput="ReadCapacityUnits=1000,WriteCapacityUnits=1000"
 }
 
+SCRIPTS_PATH=$(dirname "$0")
+CREDENTIALS_PATH=${CREDENTIALS_PATH:-scripts}
+
 echo "####################################################"
 echo "PWD=$PWD"
 echo "PATH=$PATH"
@@ -84,13 +87,13 @@ echo "SNS_ENDPOINT=$SNS_ENDPOINT"
 echo "SQS_ENDPOINT=$SQS_ENDPOINT"
 echo "####################################################"
 
-wait_for_service.sh "dynamodb" "$DYNAMODB_ENDPOINT"
-wait_for_service.sh "kms" "$KMS_ENDPOINT"
-wait_for_service.sh "secretsmanager" "$SMS_ENDPOINT"
-wait_for_service.sh "sns" "$SNS_ENDPOINT"
-wait_for_service.sh "sqs" "$SQS_ENDPOINT"
+"${SCRIPTS_PATH}"/wait_for_service.sh "dynamodb" "$DYNAMODB_ENDPOINT"
+"${SCRIPTS_PATH}"/wait_for_service.sh "kms" "$KMS_ENDPOINT"
+"${SCRIPTS_PATH}"/wait_for_service.sh "secretsmanager" "$SMS_ENDPOINT"
+"${SCRIPTS_PATH}"/wait_for_service.sh "sns" "$SNS_ENDPOINT"
+"${SCRIPTS_PATH}"/wait_for_service.sh "sqs" "$SQS_ENDPOINT"
 
-create_secret "create1st/docker_localstack_db/docker_localstack" "file://scripts/credentials.json"
+create_secret "create1st/docker_localstack_db/docker_localstack" "file://${CREDENTIALS_PATH}/credentials.json"
 create_key_with_alias "alias/docker-localstack-kms-key"
 list_kms_aliases
 create_topic "docker-localstack-topic"
