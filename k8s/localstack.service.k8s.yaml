@@ -4,7 +4,7 @@ metadata:
   name: localstack
 spec:
   selector:
-    run: localstack
+    app: localstack
   ports:
     - port: 4566
       name: edge

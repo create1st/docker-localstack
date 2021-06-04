@@ -55,7 +55,7 @@ docker-compose -f docker-compose-local.yml up
 # Run Web application
 
 ```shell
-docker run -p 80:8080 docker-localstack-webapp:local-snapshot
+docker run -p 80:8080 docker-localstack-webapp:latest
 ```
 
 # K8s
@@ -65,16 +65,36 @@ docker-comdocker -f .buildkite/image/docker-compose.yml build k8s-ci-cd
 bk run .buildkite/pipeline-k8s-ci-di-image.yaml
 ```
 
-Minikube
+# Minikube
+localstack
 ```shell
 minikube start
 kubect create -f localstack.pod.k8s.yaml
 kubect create -f localstack.service.k8s.yaml
-kubectl port-forward $(kubectl get pods | grep localstack | awk {'print $1}') 4566:4566
+kubectl port-forward $(kubectl get pods | grep "^localstack" | awk {'print $1}') 4566:4566
 localstack.init.k8s.sh
 ```
+postgres
+```shell
+kubect create -f postgres.configmap.k8s.yaml
+kubect create -f postgres.pv.k8s.yaml
+kubect create -f postgres.pod.k8s.yaml
+kubect create -f postgres.service.k8s.yaml
+```
 
-JIB
+app
+```shell
+kubect create -f app.pod.k8s.yaml
+kubectl port-forward $(kubectl get pods | grep "docker-localstack" | grep -v "webapp" | awk {'print $1}') 8080:8080
+```
+webapp
+```shell
+docker push craftandtechnology/docker-localstack-webapp:latest
+kubect create -f webapp.pod.k8s.yaml
+kubectl port-forward $(kubectl get pods | grep "docker-localstack-webapp" | awk {'print $1}') 8080:8080
+```
+
+# JIB
 ```shell
 cd app
 gradle clean build test jib -x integrationTest -x acceptanceTest
@@ -84,7 +104,6 @@ docker-compose up
 docker-compose rm -f
 docker image rm craftandtechnology/docker-localstack:latest
 ```
-
 
 ### Buildkite
 

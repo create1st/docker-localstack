@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-localstack
+  namespace: default
+  labels:
+    name: docker-localstack
+    app: docker-localstack
+spec:
+  selector:
+    matchLabels:
+      app: docker-localstack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: docker-localstack
+    spec:
+      containers:
+        - name: docker-localstack
+          image: craftandtechnology/docker-localstack:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            - name: AWS_ACCESS_KEY_ID
+              value: "docker-localhost-key"
+            - name: AWS_SECRET_ACCESS_KEY
+              value: "docker-localhost-secret"
+            - name: ACCOUNT_ID
+              value: "000000000000"
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health/readiness
+              port: edge
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1

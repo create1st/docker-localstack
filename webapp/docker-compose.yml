@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: image/Dockerfile
-    image: ${IMAGE_NAME:-docker-localstack-webapp}:${IMAGE_VERSION:-local-snapshot}
+    image: ${IMAGE_NAME:-craftandtechnology/docker-localstack-webapp}:${IMAGE_VERSION:-latest}
     container_name: webapp
     networks:
       - docker-localstack-network

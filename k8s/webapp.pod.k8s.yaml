@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-localstack-webapp
+  namespace: default
+  labels:
+    name: docker-localstack-webapp
+    app: docker-localstack-webapp
+spec:
+  selector:
+    matchLabels:
+      app: docker-localstack-webapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: docker-localstack-webapp
+    spec:
+      containers:
+        - name: docker-localstack-webapp
+          image: craftandtechnology/docker-localstack-webapp:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: PROFILE
+              value: "dev"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 2
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3

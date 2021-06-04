@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: docker-localstack-db
+  POSTGRES_USER: docker-localstack-user
+  POSTGRES_PASSWORD: docker-localstack-password

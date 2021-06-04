@@ -1,11 +1,19 @@
 server:
   port: 8080
 
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
     aws:
       secret: craftandtechnology/docker_localstack_db/docker_localstack
+
 cloud:
   aws:
     region:
