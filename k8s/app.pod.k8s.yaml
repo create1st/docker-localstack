@@ -46,7 +46,7 @@ spec:
             failureThreshold: 3
             httpGet:
               path: /actuator/health/readiness
-              port: edge
+              port: http
               scheme: HTTP
             periodSeconds: 10
             successThreshold: 1

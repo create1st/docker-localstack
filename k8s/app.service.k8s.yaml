@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-localstack
+  labels:
+    app: docker-localstack
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+  selector:
+    app: docker-localstack
