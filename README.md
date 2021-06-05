@@ -85,13 +85,23 @@ kubect create -f postgres.service.k8s.yaml
 app
 ```shell
 kubect create -f app.pod.k8s.yaml
+kubect create -f app.service.k8s.yaml
+# Port forwarding to check service
 kubectl port-forward $(kubectl get pods | grep "docker-localstack" | grep -v "webapp" | awk {'print $1}') 8080:8080
+# Check logs
+kubectl logs -f -l app=docker-localstack -c docker-localstack
 ```
 webapp
 ```shell
 docker push craftandtechnology/docker-localstack-webapp:latest
 kubect create -f webapp.pod.k8s.yaml
+kubectl create -f webapp.service.k8s.yaml
+# Port forwarding to check service
 kubectl port-forward $(kubectl get pods | grep "docker-localstack-webapp" | awk {'print $1}') 8080:8080
+# Check logs
+kubectl logs -f -l app=docker-localstack-webapp -c docker-localstack-webapp
+# Create tunnel for load balancer
+minikube tunnel
 ```
 
 # JIB
