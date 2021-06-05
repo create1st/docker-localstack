@@ -1,27 +1,16 @@
-FROM node:16.0.0-alpine3.13 AS webapp
-
-WORKDIR /app
-
-COPY ./web-ui/*.json ./
-COPY ./web-ui/src ./src
-COPY ./web-ui/public ./public
-
-RUN npm ci --only=production
-RUN npm run build
-
 FROM nginx:1.20.0-alpine
 
-LABEL Name="docker-localstack-webapp"
+LABEL Name="https-proxy"
 
 # Disable startup logs
 # ENV NGINX_ENTRYPOINT_QUIET_LOGS=1
 
-# Copy site content
-COPY --from=webapp /app/build /usr/share/nginx/html
-
 # Nginx configuration
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./nginx/conf.d/webapp.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/conf.d/https-proxy.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/etc/ssl/certs/nginx-selfsigned.crt /etc/ssl/certs/nginx-selfsigned.crt
+COPY ./nginx/etc/ssl/private/nginx-selfsigned.key /etc/ssl/private/nginx-selfsigned.key
+COPY ./nginx/etc/ssl/certs/dhparam.pem /etc/ssl/certs/dhparam.pem
 
 # Nginx unprivileged user permissions
 RUN chown -R nginx:nginx /etc/nginx \

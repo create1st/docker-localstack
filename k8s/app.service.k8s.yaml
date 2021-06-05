@@ -8,5 +8,8 @@ spec:
   type: NodePort
   ports:
     - port: 8080
+      name: http
+    - port: 8443
+      name: https
   selector:
     app: docker-localstack

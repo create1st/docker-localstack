@@ -1,0 +1,15 @@
+version: '3.8'
+
+networks:
+  docker-localstack-network:
+
+services:
+
+  https-proxy:
+    build:
+      context: .
+      dockerfile: image/Dockerfile
+    image: ${IMAGE_NAME:-craftandtechnology/https-proxy}:${IMAGE_VERSION:-latest}
+    container_name: https-proxy
+    networks:
+      - docker-localstack-network

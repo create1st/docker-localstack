@@ -51,3 +51,6 @@ yarn-error.log*
 /infrastructure/terraform.tfstate
 /infrastructure/terraform.tfstate.backup
 /docker-compose-logs/
+/https-proxy/nginx/etc/ssl/certs/nginx-selfsigned.crt
+/https-proxy/nginx/etc/ssl/certs/dhparam.pem
+/https-proxy/nginx/etc/ssl/private/nginx-selfsigned.key
