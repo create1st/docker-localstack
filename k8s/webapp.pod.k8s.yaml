@@ -23,11 +23,21 @@ spec:
             - containerPort: 8080
               name: http
           env:
-            - name: PROFILE
-              value: "dev"
+            - name: REST_ENDPOINT
+              value: "http://docker-localstack.default.svc.cluster.local:8080"
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
               port: http
               scheme: HTTP
             initialDelaySeconds: 2
@@ -42,7 +52,17 @@ spec:
               name: https
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
               port: https
               scheme: HTTPS
             initialDelaySeconds: 2
