@@ -65,8 +65,43 @@ docker-comdocker -f .buildkite/image/docker-compose.yml build k8s-ci-cd
 bk run .buildkite/pipeline-k8s-ci-di-image.yaml
 ```
 
+# Build
+
+JIB app
+
+```shell
+cd app
+gradle clean build test jib -x integrationTest -x acceptanceTest
+docker image rm craftandtechnology/docker-localstack:latest
+#docker pull craftandtechnology/docker-localstack:latest
+docker-compose up
+docker-compose rm -f
+docker image rm craftandtechnology/docker-localstack:latest
+```
+
+webapp
+
+```shell
+cd webapp
+docker-compose build
+```
+
+https-proxy sidecar
+
+```shell
+cd https-proxy
+mkdir -p "$(pwd)/nginx/etc/ssl/private"
+mkdir -p "$(pwd)/nginx/etc/ssl/certs"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout "$(pwd)/nginx/etc/ssl/private/nginx-selfsigned.key" -out "$(pwd)/nginx/etc/ssl/certs/nginx-selfsigned.crt"
+openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+docker-compose build
+docker push craftandtechnology/https-proxy:latest
+```
+
 # Minikube
+
 localstack
+
 ```shell
 minikube start
 kubect create -f localstack.pod.k8s.yaml
@@ -74,7 +109,9 @@ kubect create -f localstack.service.k8s.yaml
 kubectl port-forward $(kubectl get pods | grep "^localstack" | awk {'print $1}') 4566:4566
 localstack.init.k8s.sh
 ```
+
 postgres
+
 ```shell
 kubect create -f postgres.configmap.k8s.yaml
 kubect create -f postgres.pv.k8s.yaml
@@ -83,6 +120,7 @@ kubect create -f postgres.service.k8s.yaml
 ```
 
 app
+
 ```shell
 kubect create -f app.pod.k8s.yaml
 kubect create -f app.service.k8s.yaml
@@ -91,7 +129,9 @@ kubectl port-forward $(kubectl get pods | grep "docker-localstack" | grep -v "we
 # Check logs
 kubectl logs -f -l app=docker-localstack -c docker-localstack
 ```
+
 webapp
+
 ```shell
 docker push craftandtechnology/docker-localstack-webapp:latest
 kubect create -f webapp.pod.k8s.yaml
@@ -104,15 +144,13 @@ kubectl logs -f -l app=docker-localstack-webapp -c docker-localstack-webapp
 minikube tunnel
 ```
 
-# JIB
+# Running
+
+Self-signed certificate
+=> https://stackoverflow.com/questions/35274659/when-you-use-badidea-or-thisisunsafe-to-bypass-a-chrome-certificate-hsts-err
+
 ```shell
-cd app
-gradle clean build test jib -x integrationTest -x acceptanceTest
-docker image rm craftandtechnology/docker-localstack:latest
-#docker pull craftandtechnology/docker-localstack:latest
-docker-compose up
-docker-compose rm -f
-docker image rm craftandtechnology/docker-localstack:latest
+curl --insecure https://localhost:8443/rest/orders
 ```
 
 ### Buildkite

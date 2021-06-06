@@ -28,9 +28,25 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: http
+              scheme: HTTP
             initialDelaySeconds: 2
-            periodSeconds: 2
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+        - name: docker-localstack-webapp-https-proxy
+          image: craftandtechnology/https-proxy:latest
+          ports:
+            - containerPort: 8443
+              name: https
+          livenessProbe:
+            httpGet:
+              path: /
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 2
+            periodSeconds: 10
             timeoutSeconds: 1
             successThreshold: 1
             failureThreshold: 3
