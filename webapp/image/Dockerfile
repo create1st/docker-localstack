@@ -9,7 +9,7 @@ COPY ./web-ui/public ./public
 RUN npm ci --only=production
 RUN npm run build
 
-FROM nginx:1.20.0-alpine
+FROM nginx:1.20.0-alpine-perl
 
 LABEL Name="docker-localstack-webapp"
 
