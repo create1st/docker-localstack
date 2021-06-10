@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.5.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jetbrains.kotlin.plugin.noarg") version "1.5.10"
-    id("com.google.cloud.tools.jib") version "3.0.0"
+    id("com.google.cloud.tools.jib") version "3.1.0"
     kotlin("jvm") version "1.5.10"
     kotlin("plugin.spring") version "1.5.10"
 }
