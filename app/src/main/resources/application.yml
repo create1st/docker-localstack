@@ -3,7 +3,12 @@ spring:
     driverClassName: org.postgresql.Driver
     aws:
       secret: craftandtechnology/docker_localstack_db/docker_localstack
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://craftandtechnology.au.auth0.com/
+          jwk-set-uri: https://craftandtechnology.au.auth0.com/.well-known/jwks.json
 cloud:
   aws:
     region:

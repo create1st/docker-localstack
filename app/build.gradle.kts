@@ -60,6 +60,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.addons:reactor-extra")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
@@ -77,6 +78,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
+    acceptanceTestImplementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     acceptanceTestImplementation("io.cucumber:cucumber-java8:6.10.4")
     acceptanceTestImplementation("io.cucumber:cucumber-junit:6.10.4")
     acceptanceTestImplementation("io.cucumber:cucumber-spring:6.10.4")
@@ -117,7 +119,7 @@ val acceptanceTest = task<Test>("acceptanceTest") {
     shouldRunAfter("assemble", "test")
     dependsOn("waitForSecretsManager", "waitForSQS")
     if (springActiveProfiles == null) {
-        systemProperty("spring.profiles.active", "local")
+        systemProperty("spring.profiles.active", "local,acceptance-test-local")
     }
 }
 

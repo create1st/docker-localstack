@@ -1,0 +1,28 @@
+server:
+  port : 8080
+
+auth0:
+  client-registration-id: auth0
+  audience: https://craftandtechnology.com/docker-localstack-app
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth0:
+            authorization-grant-type: client_credentials
+            client-id: ${AUTH0_CLIENT_ID}
+            client-secret: ${AUTH0_CLIENT_SECRET}
+#            scope:
+#              - openid
+#              - profile
+#              - email
+        provider:
+          auth0:
+            issuer-uri: https://craftandtechnology.au.auth0.com/
+            token-uri: https://craftandtechnology.au.auth0.com/oauth/token
+
+craftandtechnology:
+  rest:
+    endpoint: http://localhost:8080
