@@ -54,3 +54,4 @@ yarn-error.log*
 /https-proxy/nginx/etc/ssl/certs/nginx-selfsigned.crt
 /https-proxy/nginx/etc/ssl/certs/dhparam.pem
 /https-proxy/nginx/etc/ssl/private/nginx-selfsigned.key
+/auth0/certs/

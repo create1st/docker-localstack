@@ -1,19 +1,21 @@
 package com.craftandtechnology.dockerlocalhost.glue
 
+import com.craftandtechnology.dockerlocalhost.state.StateHolder
+import com.craftandtechnology.dockerlocalhost.steps.DynamoDbSteps
+import com.craftandtechnology.dockerlocalhost.steps.RestSteps
 import com.craftandtechnology.dockerlocalhost.model.OrderStatus
-import com.craftandtechnology.dockerlocalhost.model.TestOrder.order
-import com.craftandtechnology.dockerlocalhost.repository.OrderRepository
-import com.craftandtechnology.dockerlocalhost.types.ORDER_STATUS_REGEX
+import com.craftandtechnology.dockerlocalhost.steps.StateValidationSteps
 import io.cucumber.java8.En
 import io.cucumber.java8.Scenario
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
-import reactor.core.publisher.Mono
-import java.util.UUID.randomUUID
 
 @Suppress("LeakingThis", "Unused")
 class StepDefinitions @Autowired constructor(
-    private val orderRepository: OrderRepository
+    private val stateHolder: StateHolder,
+    private val dynamoDbSteps: DynamoDbSteps,
+    private val restSteps: RestSteps,
+    private val stateValidationSteps: StateValidationSteps,
 ) : En {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -24,29 +26,32 @@ class StepDefinitions @Autowired constructor(
     init {
         Before { scenario: Scenario ->
             logger.info { "Before ${scenario.name}" }
-            transactionId = randomUUID().toString()
+            stateHolder.init()
+            dynamoDbSteps.clearTable()
         }
 
-        ParameterType("OrderStatus", ORDER_STATUS_REGEX) { orderStatus: String ->
-            OrderStatus.valueOf(orderStatus)
+        Given("Order") {
+            dynamoDbSteps.givenOrder()
         }
 
         Given("Order with status \"{OrderStatus}\"") { orderStatus: OrderStatus ->
-            logger.info { "Order with $orderStatus" }
-            val order = order(transactionId)
-                .copy(orderStatus = orderStatus)
-            val orderMono = Mono.just(order)
-
-            orderRepository.save(orderMono)
+            dynamoDbSteps.givenOrderWithStatus(orderStatus)
         }
 
         When("Order status is Accepted") {
             logger.info { "Order status is Accepted" }
+        }
 
+        When("I request orders list from API") {
+            restSteps.whenOrderListIsRequestedOnAPICall()
         }
 
         Then("Order is sent to execution") {
-            logger.info { "Order is sent to execution" }
         }
+
+        Then("Returned list contains order") {
+            stateValidationSteps.thenResultContainsOrder()
+        }
+
     }
 }

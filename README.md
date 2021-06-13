@@ -175,3 +175,9 @@ export COMPOSE_DOCKER_CLI_BUILD=0
 
 Rotate password
 https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_db-rotate.html
+
+# ENV
+```shell
+SPRING_PROFILES_ACTIVE=local,acceptance-test-local
+JAVA_TOOL_OPTIONS=-Ddrivers.vpcEndpointRegion=us-east-1 -Ddrivers.vpcEndpointUrl=http://localstack:4566
+```

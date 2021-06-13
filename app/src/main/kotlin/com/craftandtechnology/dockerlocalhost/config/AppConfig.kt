@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import
     AwsConfig::class,
     DataSourceConfig::class,
     RepositoryConfig::class,
-    RestConfig::class
+    RestConfig::class,
+    SecurityConfig::class
 )
 class AppConfig
