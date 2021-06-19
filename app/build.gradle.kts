@@ -15,7 +15,7 @@ noArg {
 
 group = "com.craftandtechnology"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -143,7 +143,7 @@ tasks.register<Exec>("waitForSQS") {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "16"
     }
 }
 
@@ -154,7 +154,7 @@ tasks.withType<Test> {
 
 jib {
     from {
-        image = "openjdk:15.0.2"
+        image = "openjdk:17-jdk"
         platforms {
             platform {
                 architecture = "arm64"

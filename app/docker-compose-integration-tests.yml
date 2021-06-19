@@ -57,7 +57,7 @@ services:
           - postgres
 
   integration-test:
-    image: openjdk:11.0.10
+    image: openjdk:17-jdk-slim
     working_dir: /app
     volumes:
     - ./:/app

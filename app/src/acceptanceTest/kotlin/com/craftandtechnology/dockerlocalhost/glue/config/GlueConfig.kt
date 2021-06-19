@@ -1,7 +1,8 @@
 package com.craftandtechnology.dockerlocalhost.glue.config
 
 import com.craftandtechnology.dockerlocalhost.config.AcceptanceTestConfig
-import com.craftandtechnology.dockerlocalhost.config.AppConfig
+import com.craftandtechnology.dockerlocalhost.config.DebugLocalTestConfig
+import com.craftandtechnology.dockerlocalhost.config.LocalTestConfig
 import io.cucumber.spring.CucumberContextConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT
@@ -9,7 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFIN
 
 @CucumberContextConfiguration
 @SpringBootTest(
-    classes = [AppConfig::class, AcceptanceTestConfig::class],
+    classes = [
+        DebugLocalTestConfig::class,
+        LocalTestConfig::class,
+        AcceptanceTestConfig::class,
+    ],
     webEnvironment = DEFINED_PORT,
 )
 class GlueConfig
