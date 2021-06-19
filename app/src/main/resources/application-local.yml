@@ -1,3 +1,8 @@
+application:
+  rest:
+    cors:
+      access-control-allow-origin: http://localhost:3000
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver

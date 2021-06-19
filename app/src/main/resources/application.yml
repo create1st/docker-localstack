@@ -1,3 +1,8 @@
+application:
+  rest:
+    cors:
+      access-control-allow-origin: ${ACCESS_CONTROL_ALLOW_ORIGIN}
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver

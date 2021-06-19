@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction
 import org.springframework.test.web.reactive.server.WebTestClient
 import com.craftandtechnology.dockerlocalhost.config.auth0.Auth0WebClientReactiveAuthorizationCodeTokenResponseClient
+import java.time.Duration
+import java.time.Duration.ofSeconds
 
 
 @Configuration
@@ -31,7 +33,6 @@ class RestAcceptanceTestConfig {
         clientCredentialsReactiveOAuth2AuthorizedClientProvider.setAccessTokenResponseClient(auth0WebClientReactiveAuthorizationCodeTokenResponseClient)
         return clientCredentialsReactiveOAuth2AuthorizedClientProvider
     }
-
 
     @Bean
     fun authorizedClientServiceReactiveOAuth2AuthorizedClientManager(
@@ -61,6 +62,7 @@ class RestAcceptanceTestConfig {
         @Value("\${craftandtechnology.rest.endpoint}") restEndpoint: String,
         auth0: ServerOAuth2AuthorizedClientExchangeFilterFunction
     ) = WebTestClient.bindToServer()
+        .responseTimeout(ofSeconds(10)) // This is a temporary hack to solve Netty io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider issue on M1
         .baseUrl(restEndpoint)
         .filter(auth0)
         .build()

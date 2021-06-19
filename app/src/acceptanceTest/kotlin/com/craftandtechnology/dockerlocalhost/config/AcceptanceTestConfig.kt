@@ -1,10 +1,10 @@
 package com.craftandtechnology.dockerlocalhost.config
 
+import com.craftandtechnology.dockerlocalhost.model.Order
+import com.craftandtechnology.dockerlocalhost.repository.OrderRepository
 import com.craftandtechnology.dockerlocalhost.state.StateHolder
 import com.craftandtechnology.dockerlocalhost.steps.DynamoDbSteps
 import com.craftandtechnology.dockerlocalhost.steps.RestSteps
-import com.craftandtechnology.dockerlocalhost.model.Order
-import com.craftandtechnology.dockerlocalhost.repository.OrderRepository
 import com.craftandtechnology.dockerlocalhost.steps.StateValidationSteps
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
