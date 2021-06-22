@@ -3,6 +3,7 @@ import {useAuth0} from '@auth0/auth0-react';
 import {GetAccessTokenSilently} from '../../common/auth/auth0';
 import {Orders} from '../../model/Order';
 import OrdersTable from "./OrdersTable";
+import axios, {AxiosResponse} from "axios";
 
 const ordersUrl = `http://localhost:8080/orders`;
 
@@ -29,14 +30,14 @@ const OrdersView = () => {
 const OrdersViewStateUpdater = (getAccessTokenSilently: GetAccessTokenSilently, setOrdersViewState: SetOrdersViewState) => useEffect(() => {
     getAccessTokenSilently()
         .then(fetchOrders)
-        .then(response => response.json())
+        .then(response => response.data)
         .then(toOrderViewState)
         .then(setOrdersViewState)
         .catch(errorHandler);
 }, [getAccessTokenSilently, setOrdersViewState])
 
-const fetchOrders = (accessToken: String) =>
-    fetch(ordersUrl, {
+const fetchOrders = (accessToken: String): Promise<AxiosResponse<Orders>> =>
+    axios.get(ordersUrl, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
