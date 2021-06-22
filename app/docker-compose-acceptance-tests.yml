@@ -57,7 +57,7 @@ services:
           - postgres
 
   acceptance-test:
-    image: openjdk:17-jdk-slim
+    image: openjdk:15.0.2-jdk
     working_dir: /app
     volumes:
     - ./:/app
