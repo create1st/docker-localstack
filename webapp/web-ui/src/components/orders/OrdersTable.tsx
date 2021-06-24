@@ -1,81 +1,51 @@
 import {Order, Orders} from "../../model/Order";
-import {
-    makeStyles,
-    Paper,
-    Table, TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Theme,
-    withStyles
-} from "@material-ui/core";
+import {Paper, TableBody, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {AlternateColorCell, AlternateColorTable, AlternateColorTableRow} from "../ui/AlternateColorTable"
+import {createContext, useContext} from "react";
 
 
-const StyledTableCell = withStyles((theme: Theme) => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
-    },
-}))(TableRow);
-
-const useStyles = makeStyles({
-    table: {
-        minWidth: 700,
-    },
-});
+const OrdersContext = createContext<Orders | undefined>(undefined);
 
 const OrdersTable = ({orders}: { orders: Orders }) => {
-    const classes = useStyles();
-
     return (
         <TableContainer component={Paper}>
-            <Table
+            <AlternateColorTable
                 id="ordersTable"
-                className={classes.table}
                 aria-label="customized table"
             >
                 <TableHead>
                     <TableRow>
-                    <StyledTableCell>User ID</StyledTableCell>
-                    <StyledTableCell>Transaction ID</StyledTableCell>
-                    <StyledTableCell>Order status</StyledTableCell>
-                    <StyledTableCell>Timestamp</StyledTableCell>
+                        <AlternateColorCell>User ID</AlternateColorCell>
+                        <AlternateColorCell>Transaction ID</AlternateColorCell>
+                        <AlternateColorCell>Order status</AlternateColorCell>
+                        <AlternateColorCell>Timestamp</AlternateColorCell>
                     </TableRow>
                 </TableHead>
-                <OrdersTableBody orders={orders}/>
-            </Table>
+                <OrdersContext.Provider value={orders}>
+                    <OrdersTableBody/>
+                </OrdersContext.Provider>
+            </AlternateColorTable>
         </TableContainer>
     );
 }
 
-const OrdersTableBody = ({orders}: { orders: Orders }) => {
-    let rows = orders.map((order, index) => orderRow(order, index))
+const OrdersTableBody = () => {
+    const orders = useContext(OrdersContext);
+    let rows = orders?.map((order, index) => orderRow(order, index))
     return (
         <TableBody>
-        {rows}
+            {rows}
         </TableBody>
     )
 }
 
 const orderRow = (order: Order, index: number) => (
-    <StyledTableRow key={index}>
-        <StyledTableCell>{order.userId}</StyledTableCell>
-        <StyledTableCell>{order.transactionId}</StyledTableCell>
-        <StyledTableCell>{order.orderStatus}</StyledTableCell>
-        <StyledTableCell>{order.timestamp}</StyledTableCell>
-    </StyledTableRow>
+    <AlternateColorTableRow key={index}>
+        <AlternateColorCell>{order.userId}</AlternateColorCell>
+        <AlternateColorCell>{order.transactionId}</AlternateColorCell>
+        <AlternateColorCell>{order.orderStatus}</AlternateColorCell>
+        <AlternateColorCell>{order.timestamp}</AlternateColorCell>
+    </AlternateColorTableRow>
 )
 
 export default OrdersTable;
