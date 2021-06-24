@@ -56,3 +56,4 @@ yarn-error.log*
 /https-proxy/nginx/etc/ssl/private/nginx-selfsigned.key
 /auth0/certs/
 /webapp/web-ui/src/config/auth_config.json
+/webapp/web-ui/public/data.json

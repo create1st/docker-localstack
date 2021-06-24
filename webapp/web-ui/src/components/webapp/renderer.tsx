@@ -1,7 +1,7 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import ReactDOM from 'react-dom';
 import providerConfig from '../../common/auth/config';
-import Webapp from './Webapp';
+import WebApp from './WebApp';
 
 type ContainerType = Element | DocumentFragment | null;
 
@@ -9,7 +9,7 @@ const renderComponent = (container: ContainerType, render: boolean) => {
   if (!render) return;
   ReactDOM.render(
     <Auth0Provider {...providerConfig}>
-      <Webapp />
+      <WebApp />
     </Auth0Provider>,
     container,
   );
