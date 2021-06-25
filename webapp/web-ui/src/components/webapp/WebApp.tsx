@@ -1,10 +1,9 @@
 import {useAuth0} from '@auth0/auth0-react';
 import React from 'react';
 import OrdersView from '../orders/OrdersView';
-import {AppBar, Button, CircularProgress, Container, Toolbar} from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
-import AppBarIconButton from "../ui/AppBarIconButton";
-import AppBarTypography from "../ui/AppBarTypography";
+import {CircularProgress, Container, CssBaseline} from "@material-ui/core";
+import WebAppBar from "./WebAppBar";
+import withRoot from "../../withRoot";
 
 const WebApp = () => {
     const {
@@ -34,20 +33,4 @@ const WebApp = () => {
     )
 }
 
-const WebAppBar = ({userName, loginButtonText, loginButtonAction} : {userName:String, loginButtonText: String, loginButtonAction:() => void}) => {
-    return (<AppBar position="static">
-        <Toolbar>
-            <AppBarIconButton edge="start" color="inherit" aria-label="menu">
-                <MenuIcon/>
-            </AppBarIconButton>
-            <AppBarTypography variant="h6">
-                Hello {userName}
-            </AppBarTypography>
-            <Button color="inherit" onClick={loginButtonAction}>
-                {loginButtonText}
-            </Button>
-        </Toolbar>
-    </AppBar>)
-}
-
-export default WebApp;
+export default withRoot(WebApp);
