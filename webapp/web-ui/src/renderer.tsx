@@ -1,7 +1,7 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import ReactDOM from 'react-dom';
-import providerConfig from '../../common/auth/config';
-import WebApp from './WebApp';
+import providerConfig from './common/auth/config';
+import WebApp from './components/webapp/WebApp';
 
 type ContainerType = Element | DocumentFragment | null;
 

@@ -1,5 +1,5 @@
 import { getBoolean } from '../common/jsUtils';
-import { renderComponent, renderUnavailable } from '../components/webapp/renderer';
+import { renderComponent, renderUnavailable } from '../renderer';
 
 export default class WebappElement extends HTMLElement {
     appContainer: HTMLDivElement;
