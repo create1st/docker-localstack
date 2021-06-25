@@ -1,7 +1,7 @@
 import {useAuth0} from '@auth0/auth0-react';
 import React from 'react';
 import OrdersView from '../orders/OrdersView';
-import {CircularProgress, Container} from "@material-ui/core";
+import {CircularProgress, Container, CssBaseline} from "@material-ui/core";
 import WebAppBar from "./WebAppBar";
 import withRoot from "../../withRoot";
 
