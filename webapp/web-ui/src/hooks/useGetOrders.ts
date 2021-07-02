@@ -4,9 +4,10 @@ import {Orders} from "../model/Order";
 import {useAuth0} from "@auth0/auth0-react";
 
 const ordersUrl = `${process.env.REACT_APP_REST_ENDPOINT}/orders`;
+
 // const ordersUrl = `data.json`;
 
-enum Status {
+export enum Status {
     Initialized,
     InProgress,
     Failed,
@@ -28,8 +29,8 @@ const useGetOrders = (): [OrdersViewState, () => void] => {
             .then(fetchOrders)
             .then(response => response.data)
             .then(toOrderViewState)
-            .then(setOrdersViewState)
-            .catch(errorHandler);
+            .catch(errorHandler)
+            .then(setOrdersViewState);
     }
     useEffect(refresh, [getAccessTokenSilently]);
     return [ordersViewState, refresh]
@@ -60,7 +61,7 @@ const errorHandler = (error: any) => {
 }
 
 const toErrorOrderViewState = (error: any): OrdersViewState => ({
-    status: Status.Success,
+    status: Status.Failed,
     message: error.message,
     orders: []
 })
