@@ -144,6 +144,15 @@ kubectl logs -f -l app=docker-localstack-webapp -c docker-localstack-webapp
 minikube tunnel
 ```
 
+webapp/web-ui/.env
+```.env
+REACT_APP_AUTH0_DOMAIN=
+REACT_APP_AUTH0_CLIENT_ID=
+REACT_APP_AUTH0_AUDIENCE=
+REACT_APP_AUTH0_SCOPE=read:orders
+REACT_APP_REST_ENDPOINT=http://localhost:8080
+```
+
 # Running
 
 Self-signed certificate

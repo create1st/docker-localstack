@@ -3,7 +3,7 @@ import axios, {AxiosResponse} from "axios";
 import {Orders} from "../model/Order";
 import {useAuth0} from "@auth0/auth0-react";
 
-const ordersUrl = `http://localhost:8080/orders`;
+const ordersUrl = `${process.env.REACT_APP_REST_ENDPOINT}/orders`;
 // const ordersUrl = `data.json`;
 
 enum Status {
