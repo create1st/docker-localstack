@@ -57,3 +57,4 @@ yarn-error.log*
 /auth0/certs/
 /webapp/web-ui/src/config/auth_config.json
 /webapp/web-ui/public/data.json
+/webapp/web-ui/.env
