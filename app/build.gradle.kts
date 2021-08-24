@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.noarg") version "1.5.20"
     id("com.google.cloud.tools.jib") version "3.1.2"
     kotlin("jvm") version "1.5.20"
-    kotlin("plugin.spring") version "1.5.20"
+    kotlin("plugin.spring") version "1.5.30"
 }
 
 noArg {
