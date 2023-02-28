@@ -55,7 +55,7 @@ val acceptanceTestRuntimeOnly: Configuration by configurations.getting {
 }
 
 dependencies {
-    implementation(platform("software.amazon.awssdk:bom:2.16.99"))
+    implementation(platform("software.amazon.awssdk:bom:2.20.14"))
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
